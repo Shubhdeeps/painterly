@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/painterly/static/css/main.6ba3f67d.css",
+    "main.js": "/painterly/static/js/main.c7bce53f.js",
+    "index.html": "/painterly/index.html",
+    "main.6ba3f67d.css.map": "/painterly/static/css/main.6ba3f67d.css.map",
+    "main.c7bce53f.js.map": "/painterly/static/js/main.c7bce53f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ba3f67d.css",
+    "static/js/main.c7bce53f.js"
+  ]
+}
