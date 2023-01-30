@@ -1,0 +1,159 @@
+:root {
+  --primary: #715539;
+  --secondary: #222222;
+  --secondaryTransparent: rgba(217, 217, 217, 0.1);
+  --fontPrimary: #ececec;
+  --fontSecondary: #7a7a7a;
+  --mentor: #f57070;
+  --student: #70f4df;
+  --highlightPrimary: #ff86a7;
+  --highlightSecondary: #70d0ff;
+  --button: #ed9122;
+  --card-width: 408px;
+  --card-height: 386px;
+}
+
+.primary-border {
+  border: 1px solid var(--primary);
+}
+
+.primary-bg {
+  background: var(--primary) !important;
+}
+.primary-color {
+  color: var(--primary) !important;
+}
+
+.secondary-bg {
+  background: var(--secondary) !important;
+}
+.secondary-color {
+  color: var(--secondary) !important;
+}
+
+.secondaryTransparent-bg {
+  background: var(--secondaryTransparent) !important;
+}
+.secondaryTransparent-color {
+  color: var(--secondaryTransparent) !important;
+}
+
+.fontPrimary {
+  color: var(--fontPrimary);
+}
+
+.fontSecondary {
+  color: var(--fontSecondary) !important;
+}
+
+.mentor-bg {
+  background: var(--mentor) !important;
+}
+
+.student-bg {
+  background: var(--student) !important;
+}
+
+.highlightPrimary-bg {
+  background: var(--highlightPrimary) !important;
+}
+
+.highlightSecondary-bg {
+  background: var(--highlightSecondary) !important;
+}
+
+.button-color {
+  background: var(--button) !important;
+}
+
+.text-1 {
+  font-size: 48px !important;
+}
+.text-2 {
+  font-size: 24px !important;
+}
+.text-3 {
+  font-size: 22px !important;
+}
+.text-4 {
+  font-size: 20px !important;
+}
+.text-5 {
+  font-size: 11px !important;
+}
+.text-6 {
+  font-size: 9px !important;
+}
+
+.text-14 {
+  font-size: 14px !important;
+}
+
+.text-18 {
+  font-size: 18px !important;
+}
+
+.fontweight-2 {
+  font-weight: 200 !important;
+}
+
+.border-radius-12 {
+  border-radius: 12px !important;
+}
+
+.border-radius-8 {
+  border-radius: 8px !important;
+}
+
+.border-radius-14 {
+  border-radius: 14px !important;
+}
+
+.border-radius-50 {
+  border-radius: 50px !important;
+}
+
+.danger-color {
+  color: #bd0000;
+}
+
+.safe-color {
+  color: #04c100;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.height-52 {
+  height: 52px;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.z-0 {
+  z-index: 0;
+}
+
+.z-1 {
+  z-index: 1;
+}
+
+.z-2 {
+  z-index: 2;
+}
+
+.mt--1 {
+  margin-top: -5px;
+}
