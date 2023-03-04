@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 
 export default function Authenticate() {
-  const handleSignIn = async () => {
+  const handleSignIn = () => {
     signInWithGoogle();
   };
   return (
