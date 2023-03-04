@@ -37,26 +37,13 @@ export default function Index({ author }: { author: string }) {
   );
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [
-      {
-        params: { profile: "" },
-      },
-    ],
-    fallback: true,
-  };
-}
-
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   const { params } = context;
-  console.log(params);
   const author = await getProfileByUID(params.profile);
 
   return {
     props: {
       author: JSON.stringify(author),
     },
-    revalidate: 2,
   };
 }
