@@ -80,18 +80,18 @@ export default function Page({
   );
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [
-      {
-        params: { artId: "5eeb23e-c6bc-7072-83c6-503d7db0eb5" },
-      },
-    ],
-    fallback: true,
-  };
-}
+// export async function getStaticPaths() {
+//   return {
+//     paths: [
+//       {
+//         params: { artId: "5eeb23e-c6bc-7072-83c6-503d7db0eb5" },
+//       },
+//     ],
+//     fallback: true,
+//   };
+// }
 
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   const { params } = context;
   const singleArt = await getGalleryPostBasedOnArtId(params.artId);
   const comments = await getCommentsOfCurrentPost(params.artId);
@@ -106,6 +106,5 @@ export async function getStaticProps(context: any) {
       comments: JSON.stringify(comments),
       author: JSON.stringify(author),
     },
-    revalidate: 2,
   };
 }
