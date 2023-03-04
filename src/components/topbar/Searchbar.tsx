@@ -2,13 +2,20 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SearchIcon from "../icons/Search.icon";
 
-export default function Searchbar() {
+export default function Searchbar({
+  setSideBarFlex,
+}: {
+  setSideBarFlex: Function | undefined;
+}) {
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode == 13) {
       setSearchText("");
       router.replace(`/search/${searchText}`);
+      if (setSideBarFlex) {
+        setSideBarFlex(false);
+      }
     }
   };
   return (

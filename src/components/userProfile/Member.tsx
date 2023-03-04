@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 
 type Props = {
-  src: string | undefined;
+  src: string | null | undefined;
   title: string;
   date: string | undefined;
   size: "sm" | "md" | "lg";

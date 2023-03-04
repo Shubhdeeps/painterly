@@ -20,7 +20,7 @@ export default function TopBar({
               className="bi bi-list fontSecondary text-1 sidebar-flex-icon"
             ></i>
             <div className="search-bar-container ">
-              <Searchbar />
+              <Searchbar setSideBarFlex={undefined} />
             </div>
           </div>
           <div className="d-flex gap-4 align-items-center">

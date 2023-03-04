@@ -14,7 +14,7 @@ export default function All() {
         <span>#Pencil</span>
         <span>#Anime</span>
       </div>
-      <CardGrid />
+      {/* <CardGrid /> */}
     </>
   );
 }

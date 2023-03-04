@@ -6,6 +6,7 @@ import NavItemsBar from "./NavItemsBar";
 import { useRouter } from "next/router";
 import OutlinedButton from "./OutlinedButton";
 import Searchbar from "../topbar/Searchbar";
+import { signOut } from "@/services/auth/validateUser";
 
 const paths: { [title: string]: "GALLERY" | "PAINTERLY" } = {
   all: "GALLERY",
@@ -39,10 +40,15 @@ export default function Sidebar({
             onClick={() => setSideBarFlex(false)}
           ></i>
         </div>
-        <Image src={logo} alt="logo" />
+        <div
+          className="text-center cursor"
+          onClick={() => router.replace("/all/all")}
+        >
+          <Image src={logo} alt="logo" />
+        </div>
         <br />
         <div className="sidebar-flex-icon">
-          <Searchbar />
+          <Searchbar setSideBarFlex={setSideBarFlex} />
         </div>
         <br />
         <br />
@@ -53,10 +59,26 @@ export default function Sidebar({
           borderClass="top-rounded"
         >
           <div className="d-flex flex-column fontPrimary align-items-center gap-2 text-2 pb-2">
-            <NavButton path="/all/all" title="All" />
-            <NavButton path="/friends" title="Friends" />
-            <NavButton path={undefined} title="Favourite" />
-            <NavButton path={undefined} title="Requested" />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path="/all/all"
+              title="All"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path="/friends"
+              title="Friends"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="Favourite"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="Requested"
+            />
           </div>
         </NavItemsBar>
         <NavItemsBar
@@ -66,15 +88,39 @@ export default function Sidebar({
           borderClass="botttom-rounded"
         >
           <div className="d-flex flex-column fontPrimary align-items-center gap-2 mt-4 text-2 pb-2">
-            <NavButton path={undefined} title="FAQs" />
-            <NavButton path={undefined} title="Contact us" />
-            <NavButton path={undefined} title="Privacy policy" />
-            <NavButton path={undefined} title="About us" />
-            <NavButton path={undefined} title="Feedback" />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="FAQs"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="Contact us"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="Privacy policy"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="About us"
+            />
+            <NavButton
+              setSideBarFlex={setSideBarFlex}
+              path={undefined}
+              title="Feedback"
+            />
           </div>
         </NavItemsBar>
         <div className="w-100 d-flex justify-content-center mt-4">
-          <OutlinedButton title="New Art" />
+          <OutlinedButton
+            title="New Art"
+            onClick={() => console.log("new art")}
+          />
+          <OutlinedButton title="Log out" onClick={() => signOut()} />
         </div>
       </div>
     </>

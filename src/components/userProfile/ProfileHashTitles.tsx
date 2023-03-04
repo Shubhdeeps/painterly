@@ -13,7 +13,7 @@ export default function ProfileHashTitles({
   const { filter } = router.query;
 
   return (
-    <div className="d-flex justify-content-start ps-2 flex-wrap gap-4 text-3 mb-4 letter-spacing">
+    <div className="d-flex justify-content-center ps-2 flex-wrap gap-4 text-3 mb-4 letter-spacing">
       {hashTitles.map((title) => (
         <div
           className="d-flex align-items-center justify-content-center"

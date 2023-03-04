@@ -8,7 +8,7 @@ import "@/styles/profile.css";
 import "@/styles/singleArt.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import type { AppProps } from "next/app";
-import Layout from "@/components/layout";
+import Layout from "@/layout";
 import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 

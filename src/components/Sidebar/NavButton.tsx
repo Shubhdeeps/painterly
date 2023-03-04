@@ -17,17 +17,28 @@ const paths: { [title: string]: string } = {
 export function NavButton({
   title,
   path,
+  setSideBarFlex,
 }: {
   title: string;
   path: string | undefined;
+  setSideBarFlex: Function;
 }) {
   const router = useRouter();
   const currActivePath = paths[router.asPath.split("/")[1]];
+
+  const handleRoute = () => {
+    //IF path available then ropute to path else if path is undefined, then route to title
+    router.replace(path ? path : `/${title.toLowerCase()}`);
+
+    // close the sidebar on mobile/tablet screen after navigation
+    setSideBarFlex((prevState: boolean) => {
+      if (prevState) {
+        return !prevState;
+      }
+    });
+  };
   return (
-    <div
-      onClick={() => router.replace(path ? path : `/${title.toLowerCase()}`)}
-      className="w-100"
-    >
+    <div onClick={() => handleRoute()} className="w-100">
       <div className="position-relative text-center d-flex justify-content-center nav-button w-100">
         <span
           className={`${
