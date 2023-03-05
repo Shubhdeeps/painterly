@@ -1,9 +1,8 @@
-import { firebaseTimestampToString } from "@/helperFunctions/firebaseTimestampToString";
-import { Post } from "@/types/Post";
+import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
+import { Post } from "@/models/Post";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { Image } from "react-bootstrap";
-import SingleArtLoader from "../loader/SingleArtLoader";
 
 export default function Card({
   data,

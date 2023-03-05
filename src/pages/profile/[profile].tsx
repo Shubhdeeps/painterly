@@ -1,10 +1,7 @@
-import CardGrid from "@/components/cardGrid";
 import Loader from "@/components/loader/Loader";
-import Community from "@/components/userProfile/Community";
-import ProfileHashTitles from "@/components/userProfile/ProfileHashTitles";
 import ProfileInfo from "@/components/userProfile/ProfileInfo";
+import { Profile } from "@/models/Profile";
 import { getProfileByUID } from "@/services/firestore/profiles";
-import { User } from "@/types/User";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -13,7 +10,7 @@ export default function Index({ author }: { author: string }) {
   if (router.isFallback) {
     return <Loader text="" />;
   }
-  const authorProfile = JSON.parse(author) as User;
+  const authorProfile = JSON.parse(author) as Profile;
   // const { profile, filter } = router.query;
 
   return (

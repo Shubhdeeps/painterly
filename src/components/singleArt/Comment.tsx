@@ -1,5 +1,5 @@
-import { firebaseTimestampToString } from "@/helperFunctions/firebaseTimestampToString";
-import { CommentsProps } from "@/types/Comment";
+import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
+import { CommentsProps } from "@/models/Comment";
 import React from "react";
 import Extension from "../extension/Index";
 import Member from "../userProfile/Member";

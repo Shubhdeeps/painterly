@@ -1,8 +1,9 @@
-import CardGrid from "@/components/cardGrid";
+import Card from "@/components/card";
 import HashTitles from "@/components/headings/HashTitles";
 import Header from "@/components/headings/Header";
 import SingleArtLoader from "@/components/loader/SingleArtLoader";
-import { getAllPosts } from "@/services/firestore/gallery/getAllGalleryPosts";
+import { Post } from "@/models/Post";
+import { getAllPosts } from "@/services/firestore/posts";
 import React, { useState } from "react";
 
 const hashTitles = ["All", "Abstract", "OilPaintaing", "Colorful", "Anime"];
@@ -16,13 +17,22 @@ export default function Filter({ posts }: { posts: string }) {
   if (!!imageCordinates) {
     return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
   }
+  const allPosts = JSON.parse(posts) as Post[];
 
   return (
     <div>
       <Header title="GALLERY" />
       <div></div>
       <HashTitles parentPath="all" hashTitles={hashTitles} />
-      <CardGrid data={JSON.parse(posts)} handleOpenImage={handleOpenImage} />
+      <div className="w-100 h-100 d-flex flex-wrap gap-4 justify-content-center">
+        {allPosts.map((post) => {
+          return (
+            <React.Fragment key={post.artId}>
+              <Card data={post} handleOpenPost={handleOpenImage} />
+            </React.Fragment>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -58,6 +68,6 @@ export async function getStaticProps(context: any) {
     props: {
       posts: JSON.stringify(response),
     },
-    revalidate: 10,
+    revalidate: 30,
   };
 }

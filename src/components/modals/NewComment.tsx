@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../headings/Header";
 import InputTextArea from "../inputFields/InputTextArea";
 import OutlinedButton from "../Sidebar/OutlinedButton";
 import Member from "../userProfile/Member";

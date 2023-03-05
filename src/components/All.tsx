@@ -1,5 +1,4 @@
 import React from "react";
-import CardGrid from "./cardGrid";
 import Header from "./headings/Header";
 
 export default function All() {

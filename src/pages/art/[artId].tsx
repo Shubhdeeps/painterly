@@ -4,15 +4,17 @@ import Art from "@/components/singleArt/Art";
 import Comment from "@/components/singleArt/Comment";
 import Likes from "@/components/singleArt/Likes";
 import ProfileInfo from "@/components/userProfile/ProfileInfo";
-import { firebaseTimestampToString } from "@/helperFunctions/firebaseTimestampToString";
-import { getCommentsOfCurrentPost } from "@/services/firestore/gallery/getCommentsOfCurrentPost";
-import { getGalleryPostBasedOnArtId } from "@/services/firestore/gallery/getGalleryPostBasedOnArtId";
+import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { getProfileByUID } from "@/services/firestore/profiles";
-import { CommentsProps } from "@/types/Comment";
-import { Post } from "@/types/Post";
-import { User } from "@/types/User";
+import { CommentsProps } from "@/models/Comment";
+import { Post } from "@/models/Post";
 import { useRouter } from "next/router";
 import React from "react";
+import { Profile } from "@/models/Profile";
+import {
+  getCommentsOfCurrentPost,
+  getGalleryPostBasedOnArtId,
+} from "@/services/firestore/posts";
 
 export default function Page({
   data,
@@ -27,7 +29,7 @@ export default function Page({
   if (router.isFallback) {
     return <Loader text="" />;
   }
-  const authorProfile = JSON.parse(author) as User;
+  const authorProfile = JSON.parse(author) as Profile;
   const art = JSON.parse(data) as Post;
   const postComments = JSON.parse(comments) as CommentsProps[];
   return (

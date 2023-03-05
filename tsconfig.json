@@ -19,6 +19,12 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/services/firestore/posts.jts",
+    "src/services/firestore/posts.js"
+  ],
   "exclude": ["node_modules"]
 }

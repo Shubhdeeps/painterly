@@ -1,7 +1,7 @@
 import { Post } from "./Post";
-import { User } from "./User";
+import { Profile } from "./Profile";
 
 export interface UserPost {
-    user: User;
+    user: Profile;
     post: Post;
 }

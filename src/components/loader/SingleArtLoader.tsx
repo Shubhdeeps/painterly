@@ -1,4 +1,4 @@
-import { firebaseTimestampToString } from "@/helperFunctions/firebaseTimestampToString";
+import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { Timestamp } from "@/services/firebaseConfig";
 
 import React, { useState, useEffect, useImperativeHandle } from "react";

@@ -1,5 +1,5 @@
 import React from "react";
-import BellIcon from "../icons/Bell.icon";
+import BellIcon from "../../assets/icons/Bell.icon";
 
 export default function Notifications() {
   return (

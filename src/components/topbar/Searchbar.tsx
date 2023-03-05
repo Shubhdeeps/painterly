@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import SearchIcon from "../icons/Search.icon";
+import SearchIcon from "../../assets/icons/Search.icon";
 
 export default function Searchbar({
   setSideBarFlex,

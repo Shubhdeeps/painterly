@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import Sidebar from "../components/Sidebar";
 import TopBar from "../components/topbar";
-import PageLoader from "next/dist/client/page-loader";
 import Loader from "../components/loader/Loader";
 import Authenticate from "../components/authenticate/Authenticate";
 
@@ -23,7 +22,7 @@ export default function Layout({ children }: { children: any }) {
         setCurrUser(null);
       }
     });
-  }, [auth.currentUser]);
+  }, []);
 
   if (isLoading) {
     return <Loader text="Authenticating" />;
