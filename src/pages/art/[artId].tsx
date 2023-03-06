@@ -14,7 +14,6 @@ import {
   getCommentsOfCurrentPost,
   getGalleryPostBasedOnArtId,
 } from "@/services/firestore/posts";
-import SingleArtExitLoader from "@/components/loader/SingleArtExitLoader";
 import { Image } from "react-bootstrap";
 
 export default function Page({
@@ -30,17 +29,6 @@ export default function Page({
   const modalRef = useRef();
   const imageRef = useRef<HTMLImageElement>(null);
   const [hideImage, setHideImage] = useState(false);
-  useEffect(() => {
-    return () => {
-      router.events.on("routeChangeStart", () => {
-        if (modalRef.current) {
-          setHideImage(true);
-          // @ts-ignore: Unreachable code error
-          // modalRef.current.openModal(imageRef.current?.getBoundingClientRect());
-        }
-      });
-    };
-  }, []);
 
   if (router.isFallback) {
     return <Loader text="" />;
@@ -52,40 +40,13 @@ export default function Page({
 
   return (
     <>
-      <SingleArtExitLoader art={art} ref={modalRef} />
       <section className="d-flex profile-filter-container gap-2">
         <div className="d-flex flex-column p-2 gap-2 ws-100 secondary-bg border-radius-14">
-          <style jsx global>{`
-            .bg-color {
-            }
-            .height-flex {
-              overflow-x: hidden;
-            }
-            .image-flex {
-              transition: 0.4s ease-in;
-              width: 100% !important;
-              height: auto !important;
-              left: 0px !important;
-              top: 0px !important;
-              margin: 0px !important;
-              overflow: hidden;
-            }
-            .small-flex {
-              position: relative;
-              width: 10% !important;
-              top: 0px !important;
-              left: 0px !important;
-              z-index: 3;
-              transition: 0.4s ease-in;
-            }
-          `}</style>
           <Image
             alt="image"
             ref={imageRef}
             // className="border-radius-14 art-fullsize"
-            className={`border-radius-14 ${
-              hideImage ? "small-flex" : "art-fullsize image-flex"
-            }`}
+            className={`border-radius-14 art-fullsize`}
             src={art.artURL}
           />
 
