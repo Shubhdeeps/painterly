@@ -93,16 +93,7 @@ export default function SingleArtLoader({
           <hr />
           <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
             <span className="text-5"></span>
-            <div className="d-flex flex-coloumn gap-2 flex-wrap justify-content-center">
-              {/* <OutlinedButton
-              title="Add Comment"
-              onClick={() => console.log("add comment")}
-            />
-            <OutlinedButton
-              title="Request Review"
-              onClick={() => console.log("hello")}
-            /> */}
-            </div>
+            <div className="d-flex flex-coloumn gap-2 flex-wrap justify-content-center"></div>
           </div>
         </div>
         <div className="profile-container">
