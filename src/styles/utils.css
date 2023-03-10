@@ -13,6 +13,9 @@
   --card-height: 386px;
 }
 
+.hover-primary:hover {
+  color: var(--primary);
+}
 .primary-border {
   border: 1px solid var(--primary);
 }
@@ -43,7 +46,7 @@
 }
 
 .fontSecondary {
-  color: var(--fontSecondary) !important;
+  color: var(--fontSecondary);
 }
 
 .mentor-bg {

@@ -3,7 +3,7 @@ import PrimaryHighlighter from "../highlighter/PrimaryHighlighter";
 import { useRouter } from "next/router";
 
 const paths: { [title: string]: string } = {
-  all: "all",
+  gallery: "gallery",
   friends: "friends",
   favourite: "favourite",
   requested: "requested",

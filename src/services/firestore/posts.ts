@@ -8,24 +8,17 @@ export const getAllPosts = async (
   filter: string
 ) => {
   try {
-    let firstPostTime = timestamp;
+    let lastPost = timestamp;
     if (lastPostDate) {
-      firstPostTime = lastPostDate;
+      lastPost = lastPostDate;
     }
-    const docs: Post[] = [];
-    await collectionRef.gallery
+    const posts = await collectionRef.gallery
+      .where("category", "array-contains", filter)
       .orderBy("created", "desc")
-      .startAfter(firstPostTime)
+      .startAfter(lastPost)
       .limit(AMOUNT_TO_BE_FETCHED)
-      .get()
-      .then((response) => {
-        response.docs.forEach((doc) => {
-          const data = doc.data();
-          docs.push(data);
-        });
-      })
-      .catch((err) => console.log(err));
-    return docs;
+      .get();
+    return posts.docs.map((post) => post.data());
   } catch (e) {
     console.log(e);
   }

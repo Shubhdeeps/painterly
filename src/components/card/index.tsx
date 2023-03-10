@@ -1,18 +1,15 @@
 import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { Post } from "@/models/Post";
 import Link from "next/link";
-import React from "react";
+import React, { forwardRef } from "react";
 import { Image } from "react-bootstrap";
 
-export default function Card({
-  data,
-  handleOpenPost,
-}: {
+type Props = {
   data: Post;
   handleOpenPost: Function;
-}) {
+};
+function Card({ data, handleOpenPost }: Props, ref: any) {
   const line = data.description;
-  // const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
   const art = {
     artURL: data.artURL,
     title: data.title,
@@ -22,7 +19,10 @@ export default function Card({
 
   return (
     <>
-      <div className="card-container secondaryTransparent-bg border-radius-12">
+      <div
+        ref={ref}
+        className={`card-container secondaryTransparent-bg border-radius-12`}
+      >
         <div className="d-flex flex-column h-100">
           <Link href={`/art/${data.artId}`} passHref>
             <Image
@@ -55,10 +55,25 @@ export default function Card({
             <div className="text-6 noselect ">
               {firebaseTimestampToString(data.created)}
             </div>
-            <div className="text-5 noselect cursor"> #ABSTRACT</div>
+            <div className="text-5 noselect cursor d-flex flex-wrap gap-2">
+              {data.category.map((cat) => {
+                if (cat === "all") {
+                  return null;
+                }
+                return (
+                  <Link href={`/all/${cat}`} passHref key={cat}>
+                    <span className="fw-bold  fontSecondary hover-primary">
+                      #{cat.toUpperCase()}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 }
+
+export default forwardRef(Card);

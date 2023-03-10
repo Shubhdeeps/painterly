@@ -9,7 +9,7 @@ import Searchbar from "../topbar/Searchbar";
 import { signOut } from "@/services/auth/validateUser";
 
 const paths: { [title: string]: "GALLERY" | "PAINTERLY" } = {
-  all: "GALLERY",
+  gallery: "GALLERY",
   friends: "GALLERY",
   favourite: "GALLERY",
   requested: "GALLERY",
@@ -61,8 +61,8 @@ export default function Sidebar({
           <div className="d-flex flex-column fontPrimary align-items-center gap-2 text-2 pb-2">
             <NavButton
               setSideBarFlex={setSideBarFlex}
-              path="/all/all"
-              title="All"
+              path="/gallery/all"
+              title="Gallery"
             />
             <NavButton
               setSideBarFlex={setSideBarFlex}
