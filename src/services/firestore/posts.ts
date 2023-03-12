@@ -27,9 +27,10 @@ export const getAllPosts = async (
       .orderBy("created", "desc")
       .startAfter(lastPost)
       .limit(AMOUNT_TO_BE_FETCHED)
-      .get({
-        source: "cache",
-      });
+      .get();
+    // .get({
+    //   source: "cache",
+    // });
     if (posts.docs[posts.docs.length - 1].data().created === lastPostDate) {
       return null;
     }
@@ -179,9 +180,10 @@ export const getPostsBasedOnUid = async (
       .orderBy("created", "desc")
       .startAfter(lastPost)
       .limit(AMOUNT_TO_BE_FETCHED)
-      .get({
-        source: "cache",
-      });
+      .get();
+    // .get({
+    //   source: "cache",
+    // });
     if (posts.docs[posts.docs.length - 1].data().created === lastPostDate) {
       return null;
     }
