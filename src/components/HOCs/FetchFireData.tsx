@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Card from "../card";
 import Loader from "../loader/Loader";
-import SingleArtLoader from "../loader/SingleArtLoader";
 
 export default function FetchFireData({
   getPosts,
