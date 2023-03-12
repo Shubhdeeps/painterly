@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import OutlinedButton from "./OutlinedButton";
 import Searchbar from "../topbar/Searchbar";
 import { signOut } from "@/services/auth/validateUser";
+import NewPost from "../modals/NewPost";
 
 const paths: { [title: string]: "GALLERY" | "PAINTERLY" } = {
   gallery: "GALLERY",
@@ -26,6 +27,7 @@ export default function Sidebar({
   sideBarFlex: boolean;
   setSideBarFlex: Function;
 }) {
+  const [newPost, setNewPost] = useState(false);
   const router = useRouter();
   const currPathCategory = paths[router.asPath.split("/")[1]];
 
@@ -33,6 +35,7 @@ export default function Sidebar({
 
   return (
     <>
+      <NewPost isOpen={newPost} setOpen={setNewPost} />
       <div className={`sidebar secondary-bg ${!sideBarFlex && "sidebar-flex"}`}>
         <div className="d-flex justify-content-end">
           <i
@@ -115,12 +118,17 @@ export default function Sidebar({
             />
           </div>
         </NavItemsBar>
-        <div className="w-100 d-flex justify-content-center mt-4">
+        <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-4 gap-3">
           <OutlinedButton
+            type="button"
             title="New Art"
-            onClick={() => console.log("new art")}
+            onClick={() => setNewPost(true)}
           />
-          <OutlinedButton title="Log out" onClick={() => signOut()} />
+          <OutlinedButton
+            type="button"
+            title="Log out"
+            onClick={() => signOut()}
+          />
         </div>
       </div>
     </>

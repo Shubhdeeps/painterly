@@ -8,13 +8,14 @@ import { getProfileByUID } from "@/services/firestore/profiles";
 import { CommentsProps } from "@/models/Comment";
 import { Post } from "@/models/Post";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Profile } from "@/models/Profile";
 import {
   getCommentsOfCurrentPost,
   getGalleryPostBasedOnArtId,
 } from "@/services/firestore/posts";
 import { Image } from "react-bootstrap";
+import { auth } from "@/services/firebaseConfig";
 
 export default function Page({
   data,
@@ -26,14 +27,13 @@ export default function Page({
   author: string;
 }) {
   const router = useRouter();
-  const modalRef = useRef();
   const imageRef = useRef<HTMLImageElement>(null);
-  const [hideImage, setHideImage] = useState(false);
 
   if (router.isFallback) {
     return <Loader text="" />;
   }
 
+  const currUserId = auth.currentUser?.uid;
   const authorProfile = JSON.parse(author) as Profile;
   const art = JSON.parse(data) as Post;
   const postComments = JSON.parse(comments) as CommentsProps[];
@@ -45,7 +45,6 @@ export default function Page({
           <Image
             alt="image"
             ref={imageRef}
-            // className="border-radius-14 art-fullsize"
             className={`border-radius-14 art-fullsize`}
             src={art.artURL}
           />
@@ -55,7 +54,15 @@ export default function Page({
               <span className="primary-color text-14 fw-bold">{art.title}</span>
               <span>{firebaseTimestampToString(art.created)}</span>
             </div>
-            <Likes />
+            {currUserId && (
+              <Likes
+                fired={art.fire.includes(currUserId)}
+                hearted={art.heart.includes(currUserId)}
+                isSad={art.sadness.includes(currUserId)}
+                isShocked={art.bomb.includes(currUserId)}
+                smiled={art.smile.includes(currUserId)}
+              />
+            )}
           </div>
           <span className="text-5 fontSecondary mt-2">{art.description}</span>
           <span className="fw-bold fontSecondary text-5">
@@ -66,10 +73,12 @@ export default function Page({
             <span className="text-5">Comments</span>
             <div className="d-flex flex-coloumn gap-2 flex-wrap justify-content-center">
               <OutlinedButton
+                type="submit"
                 title="Add Comment"
                 onClick={() => console.log("add comment")}
               />
               <OutlinedButton
+                type="button"
                 title="Request Review"
                 onClick={() => console.log("hello")}
               />

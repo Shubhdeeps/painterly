@@ -1,10 +1,12 @@
 body {
-  overflow-x: hidden;
+  overflow: hidden;
   font-family: "Josefin Sans", sans-serif;
   background: rgb(42, 42, 42) !important;
   height: 100vh;
 }
-
+.main-container {
+  overflow: auto;
+}
 :root {
   --primary: #715539;
   --sidebar-width: 325px;
@@ -92,16 +94,6 @@ a:visited {
 }
 .z-1 {
   z-index: 1;
-}
-
-.share-art-button {
-  border: 1px solid var(--primary);
-  width: 185px;
-}
-
-.share-art-button:hover {
-  color: rgb(37, 37, 37) !important;
-  background: var(--primary);
 }
 
 .top-bar-container {
@@ -195,4 +187,75 @@ a:visited {
   :root {
     --sidebar-width: 100%;
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+} */
+*/ .share-art-loader {
+  border: 1px solid rgb(68, 68, 68);
+  background: none !important;
+  width: 185px;
+  height: 100%;
+  color: rgb(68, 68, 68);
+  height: 35px !important;
+}
+
+.share-art-button:hover {
+  color: rgb(37, 37, 37) !important;
+  background: var(--primary) !important;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+input[type="checkbox"],
+input[name="filters"],
+[type="datetime-local"],
+[type="date"],
+textarea {
+  background: none !important;
+  border: none;
+}
+input[type="button"],
+input[type="submit"] {
+  border: 1px solid var(--primary);
+  background: none !important;
+  width: 185px;
+  height: 100%;
+  height: 35px;
+  color: #715539;
+}
+
+input:focus,
+input[type="password"],
+input[type="button"],
+input[type="submit"],
+input[type="number"],
+input[type="email"],
+input[type="checkbox"],
+input[name="filters"],
+[type="datetime-local"],
+[type="date"],
+textarea {
+  outline: none;
+  background: none !important;
 }

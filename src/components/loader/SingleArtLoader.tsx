@@ -58,10 +58,10 @@ export default function SingleArtLoader({
             top: ${cordinates.top - 128}px;
             width=${cordinates.width}px; 
             height=${cordinates.height}px;
-            transition: 1s ease-in;
+            transition: 0.2s ease-in;
           }
           .image-flex {
-            transition: 0.4s ease-in;
+            transition: 0.2s ease-in;
             position: relative !important;
             width: 100% !important;
             height: auto !important;

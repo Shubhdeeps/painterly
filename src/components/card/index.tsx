@@ -1,14 +1,28 @@
 import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { Post } from "@/models/Post";
 import Link from "next/link";
-import React, { forwardRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-bootstrap";
+import { useInView } from "react-intersection-observer";
 
 type Props = {
   data: Post;
   handleOpenPost: Function;
 };
-function Card({ data, handleOpenPost }: Props, ref: any) {
+function Card({ data, handleOpenPost }: Props) {
+  const [isviewed, setIsViewed] = useState(false);
+  //for infinite scroll
+  const { ref, inView } = useInView({
+    /* Optional options */
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      !isviewed && setIsViewed(true);
+    }
+  }, [inView, isviewed]);
+
   const line = data.description;
   const art = {
     artURL: data.artURL,
@@ -21,7 +35,9 @@ function Card({ data, handleOpenPost }: Props, ref: any) {
     <>
       <div
         ref={ref}
-        className={`card-container secondaryTransparent-bg border-radius-12`}
+        className={`card-container secondaryTransparent-bg border-radius-12 ${
+          isviewed ? "entry-onview" : "exit-onview"
+        }`}
       >
         <div className="d-flex flex-column h-100">
           <Link href={`/art/${data.artId}`} passHref>
@@ -76,4 +92,4 @@ function Card({ data, handleOpenPost }: Props, ref: any) {
   );
 }
 
-export default forwardRef(Card);
+export default Card;

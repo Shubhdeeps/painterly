@@ -6,13 +6,22 @@ export default function ChooseNewArtCategory({
   categoryRef,
 }: {
   categories: string[];
-  categoryRef: React.MutableRefObject<string>;
+  categoryRef: React.MutableRefObject<string[]>;
 }) {
-  const [isSelected, setSelected] = useState(categories[0]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleSelect = (category: string) => {
-    setSelected(category);
-    categoryRef.current = category;
+    if (selectedCategories.includes(category)) {
+      const newCategorySet = selectedCategories.filter(
+        (categories) => categories !== category
+      );
+      setSelectedCategories(newCategorySet);
+      categoryRef.current = newCategorySet;
+      return;
+    }
+    const newCategorySet = [...selectedCategories, category];
+    setSelectedCategories(newCategorySet);
+    categoryRef.current = newCategorySet;
   };
 
   return (
@@ -23,11 +32,16 @@ export default function ChooseNewArtCategory({
             key={category}
             className=" cursor d-flex align-items-center justify-content-center"
           >
-            <span className="z-1" onClick={() => handleSelect(category)}>
+            <span
+              className="z-1 noselect"
+              onClick={() => handleSelect(category)}
+            >
               {category}
             </span>
             <span className="position-absolute">
-              {isSelected === category && <SecondaryHighlighter2 />}
+              {selectedCategories.includes(category) && (
+                <SecondaryHighlighter2 />
+              )}
             </span>
           </div>
         );

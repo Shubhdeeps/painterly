@@ -1,13 +1,42 @@
-import React, { useRef, useState } from "react";
+import { postNewArt } from "@/services/firestore/posts";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-bootstrap";
 import InputTextArea from "../inputFields/InputTextArea";
 import InputTextField from "../inputFields/InputTextField";
+import Loader from "../loader/Loader";
 import OutlinedButton from "../Sidebar/OutlinedButton";
 import ChooseNewArtCategory from "./ChooseNewArtCategory";
+import ModalWrapper from "./ModalWrapper";
 
-export default function NewPost() {
+export default function NewPost({
+  isOpen,
+  setOpen,
+}: {
+  isOpen: boolean;
+  setOpen: Function;
+}) {
   const [isUploaded, setIsUploaded] = useState<File | null>(null);
-  const categoryRef = useRef(categories[0]);
+  const [alert, setAlert] = useState("");
+  const categoryRef = useRef([]);
+  const titleRef = useRef("");
+  const descriptionRef = useRef("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("paste", (e) => {
+      if (e.clipboardData) setIsUploaded(e.clipboardData?.files[0]);
+    });
+
+    return () => {
+      document.removeEventListener("paste", () => {
+        return;
+      });
+    };
+  }, []);
+
+  if (!isOpen) {
+    return null;
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -15,16 +44,64 @@ export default function NewPost() {
     }
   };
 
-  const handleSubmit = () => {
-    console.log(categoryRef.current);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    if (!titleRef.current) {
+      setAlert("Title required!");
+      setIsLoading(false);
+      return;
+    }
+    if (!isUploaded) {
+      setAlert("Image required!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!categoryRef.current.length) {
+      setAlert("Select a category");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isUploaded.name.match(/\.(jpg|jpeg|png)$/)) {
+      console.log(isUploaded.name);
+      setAlert("Select valid image format! (jpg, jpeg, png)");
+      setIsLoading(false);
+      return;
+    }
+
+    setAlert("");
+    const res = await postNewArt(
+      titleRef.current,
+      isUploaded,
+      descriptionRef.current,
+      categoryRef.current
+    );
+    console.log(res);
+    setIsLoading(false);
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
   };
 
   return (
-    <div className="modal-bg">
-      <div className="modal-container secondary-bg border-radius-14 fontPrimary d-flex flex-column gap-3">
+    <ModalWrapper>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+        className="modal-container secondary-bg border-radius-14 fontPrimary d-flex flex-column gap-3"
+      >
         <span>New Art</span>
-        <InputTextField icon="" placeholder="Title" />
-        <InputTextArea icon="" placeholder="Description" />
+        <InputTextField icon="" placeholder="Title" textRef={titleRef} />
+        <InputTextArea
+          icon=""
+          placeholder="Description"
+          textRef={descriptionRef}
+        />
         <div className="d-flex justify-content-center">
           {isUploaded && (
             <Image
@@ -67,20 +144,22 @@ export default function NewPost() {
           categories={categories}
           categoryRef={categoryRef}
         />
-        <div className="d-flex justify-content-end">
-          <OutlinedButton title="Post" onClick={() => handleSubmit()} />
+        <div className="d-flex justify-content-end gap-2">
+          <OutlinedButton
+            title="Cancel"
+            onClick={() => handleCloseModal()}
+            type={"button"}
+          />
+          <OutlinedButton
+            title={!isLoading ? "Post" : "Element"}
+            onClick={() => console.log()}
+            type="submit"
+          />
         </div>
-      </div>
-    </div>
+        {!!alert && <span className="text-danger fs-6">{alert}</span>}
+      </form>
+    </ModalWrapper>
   );
 }
 
-const categories = [
-  "Abstract",
-  "Illustration",
-  "OilPainting",
-  "Cryons",
-  "Colorful",
-  "Anime",
-  "Cartoon",
-];
+const categories = ["Abstract", "Pencil", "Colorful", "Anime"];

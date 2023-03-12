@@ -43,6 +43,7 @@ export default function ProfileInfo({
             {currentUserProfile && (
               <span className="mt-4">
                 <OutlinedButton
+                  type="button"
                   title="Edit"
                   onClick={() => console.log("click")}
                 />

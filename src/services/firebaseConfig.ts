@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 import "firebase/auth";
+import "firebase/firestore/bundle";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,6 +16,12 @@ const firebaseConfig = {
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+  firebase
+    .firestore()
+    .enablePersistence()
+    .catch((e) => {
+      console.log(e.message);
+    });
 }
 
 export const firestore = firebase.firestore();
