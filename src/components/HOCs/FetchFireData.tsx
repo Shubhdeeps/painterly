@@ -51,7 +51,7 @@ export default function FetchFireData({
         }
       }
     });
-  }, [filterName]);
+  }, [filterName, getPosts]);
 
   useEffect(() => {
     if (!!freshPosts.length) {
@@ -80,7 +80,7 @@ export default function FetchFireData({
         }
       });
     }
-  }, [filterName, hasMore, inView, posts]);
+  }, [filterName, getPosts, hasMore, inView, posts]);
 
   useEffect(() => {
     if (!!renderPosts.length) {
