@@ -160,3 +160,11 @@ textarea {
 .mt--1 {
   margin-top: -5px;
 }
+
+.width-320 {
+  width: 320px;
+}
+
+.border-r1 {
+  border-radius: 15px;
+}

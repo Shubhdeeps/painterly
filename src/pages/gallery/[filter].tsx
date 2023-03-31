@@ -17,6 +17,12 @@ export default function Page() {
       <Header title="GALLERY" />
       <HashTitles parentPath="gallery" hashTitles={hashTitles} />
       <FetchFireData
+        breakpointColumnsObj={{
+          default: 4,
+          1600: 3,
+          1200: 2,
+          770: 1,
+        }}
         setArt={setArt}
         setImageCordinates={setImageCordinates}
         getPosts={getAllPosts}

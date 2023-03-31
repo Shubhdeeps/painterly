@@ -5,11 +5,13 @@ import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Card from "../card";
 import Loader from "../loader/Loader";
+import Masonry from "react-masonry-css";
 
 export default function FetchFireData({
   getPosts,
   setArt,
   setImageCordinates,
+  breakpointColumnsObj,
 }: {
   getPosts: (
     lastPostDate: Timestamp | undefined,
@@ -17,6 +19,7 @@ export default function FetchFireData({
   ) => Promise<Post[] | null | undefined>;
   setArt: Function;
   setImageCordinates: Function;
+  breakpointColumnsObj: any;
 }) {
   //   return function Fetch() {
   const router = useRouter();
@@ -97,10 +100,18 @@ export default function FetchFireData({
     setArt(post);
   };
 
+  if (isLoading) {
+    return <Loader text="" />;
+  }
   return (
     <>
       {/* <WrappedComponent /> */}
-      <div className="w-100 h-100 d-flex flex-wrap gap-4 justify-content-center">
+      {/* <div className=" d-flex flex-wrap gap-4 justify-content-center"> */}
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
         {posts.map((post: Post) => {
           return (
             <React.Fragment key={post.artId}>
@@ -110,7 +121,8 @@ export default function FetchFireData({
         })}
         {isLoading && <Loader text="" />}
         <div ref={ref}></div>
-      </div>
+      </Masonry>
+      {/* </div> */}
     </>
   );
 }

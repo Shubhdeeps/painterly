@@ -29,6 +29,10 @@ export default function Index({ author }: { author: string }) {
         <Header title="Posts" />
         <br />
         <FetchFireData
+          breakpointColumnsObj={{
+            default: 2,
+            770: 1,
+          }}
           setArt={setArt}
           setImageCordinates={setImageCordinates}
           getPosts={getPostsBasedOnUid}
