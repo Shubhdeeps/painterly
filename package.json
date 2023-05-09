@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@firebase/app-types": "^0.8.1",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.3",
     "@next/font": "13.1.5",
     "@preact/signals-react": "^1.2.1",
     "@types/node": "18.11.18",

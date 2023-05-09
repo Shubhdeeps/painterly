@@ -1,6 +1,6 @@
 import Loader from "@/components/loader/Loader";
 import OutlinedButton from "@/components/Sidebar/OutlinedButton";
-import Comment from "@/components/singleArt/Comment";
+import Comment from "@/components/comment";
 import Likes from "@/components/singleArt/Likes";
 import ProfileInfo from "@/components/userProfile/ProfileInfo";
 import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
@@ -16,6 +16,7 @@ import {
 } from "@/services/firestore/posts";
 import { Image } from "react-bootstrap";
 import { auth } from "@/services/firebaseConfig";
+import CreateComment from "@/components/comment/CreateComment";
 
 export default function Page({
   data,
@@ -65,25 +66,16 @@ export default function Page({
             )}
           </div>
           <span className="text-5 fontSecondary mt-2">{art.description}</span>
-          <span className="fw-bold fontSecondary text-5">
-            {/* #{art.category.toUpperCase()} */} #ABSTRACT
-          </span>
-          <hr />
-          <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
-            <span className="text-5">Comments</span>
-            <div className="d-flex flex-coloumn gap-2 flex-wrap justify-content-center">
-              <OutlinedButton
-                type="submit"
-                title="Add Comment"
-                onClick={() => console.log("add comment")}
-              />
-              <OutlinedButton
-                type="button"
-                title="Request Review"
-                onClick={() => console.log("hello")}
-              />
-            </div>
+          <div className="fw-bold fontSecondary text-5">
+            {art.category.map((cat) => {
+              if (cat === "all") {
+                return <></>;
+              }
+              return <span key={cat}> #{cat.toUpperCase()}</span>;
+            })}
           </div>
+          <hr />
+          <CreateComment />
           <div className="d-flex flex-column gap-2 mb-1 pt-3">
             {postComments.map((comment) => {
               return (
