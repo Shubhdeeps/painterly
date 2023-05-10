@@ -1,5 +1,4 @@
 import Loader from "@/components/loader/Loader";
-import OutlinedButton from "@/components/Sidebar/OutlinedButton";
 import Comment from "@/components/comment";
 import Likes from "@/components/singleArt/Likes";
 import ProfileInfo from "@/components/userProfile/ProfileInfo";
@@ -29,7 +28,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const imageRef = useRef<HTMLImageElement>(null);
-
+  const commentRef = useRef<HTMLDivElement | null>(null);
   if (router.isFallback) {
     return <Loader text="" />;
   }
@@ -41,7 +40,10 @@ export default function Page({
 
   return (
     <>
-      <section className="d-flex profile-filter-container gap-2">
+      <section
+        className="d-flex profile-filter-container gap-2"
+        id="art-section"
+      >
         <div className="d-flex flex-column p-2 gap-2 ws-100 secondary-bg border-radius-14">
           <Image
             alt="image"
@@ -75,12 +77,12 @@ export default function Page({
             })}
           </div>
           <hr />
-          <CreateComment />
-          <div className="d-flex flex-column gap-2 mb-1 pt-3">
+          <CreateComment postId={art.artId} commentsParentRef={commentRef} />
+          <div className="d-flex flex-column gap-1 mb-1 pt-3" ref={commentRef}>
             {postComments.map((comment) => {
               return (
                 <React.Fragment key={comment.commentId}>
-                  <Comment comment={comment} />
+                  <Comment comment={comment} highlighted={false} />
                 </React.Fragment>
               );
             })}

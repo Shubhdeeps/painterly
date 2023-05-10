@@ -5,6 +5,8 @@ import Sidebar from "../components/Sidebar";
 import TopBar from "../components/topbar";
 import Loader from "../components/loader/Loader";
 import Authenticate from "../components/authenticate/Authenticate";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "@/utils/theme";
 
 export default function Layout({ children }: { children: any }) {
   const [sideBarFlex, setSideBarFlex] = useState(false);
@@ -31,7 +33,7 @@ export default function Layout({ children }: { children: any }) {
   console.log(auth.currentUser?.email);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       {currUser ? (
         <>
           <div
@@ -52,6 +54,6 @@ export default function Layout({ children }: { children: any }) {
       ) : (
         <Authenticate />
       )}
-    </>
+    </ThemeProvider>
   );
 }

@@ -2,7 +2,6 @@ import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTi
 import { CommentsProps } from "@/models/Comment";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
 
 export default function CommentAvatar({ comment }: { comment: CommentsProps }) {

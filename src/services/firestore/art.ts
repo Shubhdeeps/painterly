@@ -1,6 +1,6 @@
 import { ArtRequests } from "@/models/Requests";
 import { randomUUID } from "crypto";
-import { firestore, timestamp } from "@/services/firebaseConfig";
+import { timestamp } from "@/services/firebaseConfig";
 import { collectionRef } from "./collectionOperations";
 
 export const createNewArtRequest = async (

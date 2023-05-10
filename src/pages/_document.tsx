@@ -10,7 +10,6 @@ export default function Document() {
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
         crossOrigin="anonymous"
       />
-
       <body>
         <Main />
         <NextScript />
