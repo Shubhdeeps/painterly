@@ -11,6 +11,8 @@ import { createComment } from "@/services/firestore/posts";
 import Comment from ".";
 import ReactDOM from "react-dom";
 import { CommentsProps } from "@/models/Comment";
+import { sendNewNotification } from "@/services/firestore/notifications";
+import { sendFriendRequest } from "@/services/firestore/friendRequest";
 
 export default function CreateComment({
   postId,
@@ -34,6 +36,12 @@ export default function CreateComment({
   };
 
   useEffect(() => {
+    // sendNewNotification(
+    //   "shubh-reciever2",
+    //   "You have new notification",
+    //   "new-comment"
+    // );
+    // sendFriendRequest("shubhdeep");
     if (commentsParentRef.current && commented) {
       console.log(commentsParentRef.current.children);
       const allChildren = Array.prototype.slice.call(

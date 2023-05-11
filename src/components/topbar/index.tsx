@@ -3,6 +3,8 @@ import { Container } from "react-bootstrap";
 import Notifications from "./Notifications";
 import Searchbar from "./Searchbar";
 import Userprofile from "./Userprofile";
+import FriendRequest from "./FriendRequest";
+import { Box } from "@mui/material";
 
 export default function TopBar({
   setSideBarFlex,
@@ -23,10 +25,11 @@ export default function TopBar({
               <Searchbar setSideBarFlex={undefined} />
             </div>
           </div>
-          <div className="d-flex gap-4 align-items-center">
+          <Box display="flex" gap={1} alignItems="center">
+            <FriendRequest />
             <Notifications />
             <Userprofile />
-          </div>
+          </Box>
         </Container>
       </div>
     </div>

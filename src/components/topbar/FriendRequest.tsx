@@ -1,5 +1,5 @@
 import React from "react";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import Person2Icon from "@mui/icons-material/Person2";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
@@ -13,7 +13,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
-export default function Notifications() {
+export default function FriendRequest() {
   return (
     <IconButton
       aria-label="cart"
@@ -21,8 +21,8 @@ export default function Notifications() {
         outline: "none !important",
       }}
     >
-      <StyledBadge badgeContent={4} color="secondary">
-        <NotificationsIcon sx={{ color: "text.secondary" }} fontSize="large" />
+      <StyledBadge badgeContent={2} color="secondary">
+        <Person2Icon sx={{ color: "text.secondary" }} fontSize="large" />
       </StyledBadge>
     </IconButton>
   );
