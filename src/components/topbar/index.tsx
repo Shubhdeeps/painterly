@@ -1,9 +1,9 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import Notifications from "./Notifications";
+import Notifications from "../notifications/Notifications";
 import Searchbar from "./Searchbar";
 import Userprofile from "./Userprofile";
-import FriendRequest from "./FriendRequest";
+import FriendRequest from "../notifications/FriendRequest";
 import { Box } from "@mui/material";
 
 export default function TopBar({

@@ -20,10 +20,12 @@ export function sendNewNotification(
   console.log(notification);
   try {
     database
-      .ref("notifications/" + receiver)
+      .ref("notifications/unseen/" + receiver)
       .child(id)
       .set(notification);
   } catch (e) {
     console.log(e);
   }
 }
+
+export function readNotification(notificationId: string) {}

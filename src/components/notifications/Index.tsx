@@ -5,15 +5,14 @@ export default function Extension({
   icon,
 }: {
   children: any;
-  icon: string;
+  icon: any;
 }) {
   const [isFlexed, setFlex] = useState(false);
   return (
     <div className="d-flex flex-column align-items-end">
-      <i
-        className="bi bi-three-dots-vertical fontSecondary cursor"
-        onClick={() => setFlex(!isFlexed)}
-      />
+      <span className="cursor" onClick={() => setFlex(!isFlexed)}>
+        {icon}
+      </span>
       {isFlexed && (
         <div className="position-relative d-flex flex-column align-items-end">
           <div

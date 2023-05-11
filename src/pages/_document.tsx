@@ -10,6 +10,10 @@ export default function Document() {
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
         crossOrigin="anonymous"
       />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
       <body>
         <Main />
         <NextScript />

@@ -37,7 +37,7 @@ export default function CreateComment({
 
   useEffect(() => {
     // sendNewNotification(
-    //   "shubh-reciever2",
+    //   "18KG8ErcJ3hC9R7O001CLsBAKtA2",
     //   "You have new notification",
     //   "new-comment"
     // );
