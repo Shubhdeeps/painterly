@@ -43,7 +43,6 @@ export default function CreateComment({
     // );
     // sendFriendRequest("shubhdeep");
     if (commentsParentRef.current && commented) {
-      console.log(commentsParentRef.current.children);
       const allChildren = Array.prototype.slice.call(
         commentsParentRef.current.children
       );
@@ -60,7 +59,7 @@ export default function CreateComment({
       ));
 
       const newComment = <Comment comment={commented} highlighted={true} />;
-      elements.push(newComment);
+      elements.splice(0, 0, newComment);
       ReactDOM.render(<>{elements}</>, commentsParentRef.current);
       const parentContainer = document.getElementById("art-section");
       parentContainer?.scrollTo(0, document.body.scrollHeight);

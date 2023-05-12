@@ -1,8 +1,9 @@
 import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 export default function DropDownMenu({
   anchorEl,
@@ -64,6 +65,21 @@ export default function DropDownMenu({
         handleClose={handleClose}
         src="https://www.maxpixel.net/static/photo/1x/Young-Model-Person-Woman-Lady-Face-Female-Makeup-6109643.jpg"
       />
+      <Divider />
+      <Box px={2.5}>
+        <IconButton
+          sx={{
+            outline: "none !important",
+            borderRadius: "5px !important",
+          }}
+          color="info"
+        >
+          <DoneAllIcon fontSize="small" />
+          <Typography pl={1} variant="subtitle2">
+            Mark all read
+          </Typography>
+        </IconButton>
+      </Box>
     </Menu>
   );
 }

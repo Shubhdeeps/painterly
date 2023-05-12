@@ -16,6 +16,9 @@ import {
 import { Image } from "react-bootstrap";
 import { auth } from "@/services/firebaseConfig";
 import CreateComment from "@/components/comment/CreateComment";
+import { useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import AnimatedPopUpReactionPallet from "@/components/reactions/AnimatedPopUpReactionPallet";
 
 export default function Page({
   data,
@@ -27,6 +30,7 @@ export default function Page({
   author: string;
 }) {
   const router = useRouter();
+  const [seeAll, setSeeAll] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const commentRef = useRef<HTMLDivElement | null>(null);
   if (router.isFallback) {
@@ -37,7 +41,7 @@ export default function Page({
   const authorProfile = JSON.parse(author) as Profile;
   const art = JSON.parse(data) as Post;
   const postComments = JSON.parse(comments) as CommentsProps[];
-
+  const sliceNum = seeAll ? postComments.length : 5;
   return (
     <>
       <section
@@ -53,11 +57,8 @@ export default function Page({
           />
 
           <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div className="text-6 fontSecondary d-flex flex-column align-items-start">
-              <span className="primary-color text-14 fw-bold">{art.title}</span>
-              <span>{firebaseTimestampToString(art.created)}</span>
-            </div>
-            {currUserId && (
+            <AnimatedPopUpReactionPallet />
+            {/* {currUserId && (
               <Likes
                 fired={art.fire.includes(currUserId)}
                 hearted={art.heart.includes(currUserId)}
@@ -65,7 +66,11 @@ export default function Page({
                 isShocked={art.bomb.includes(currUserId)}
                 smiled={art.smile.includes(currUserId)}
               />
-            )}
+            )} */}
+            <div className="text-6 fontSecondary d-flex flex-column align-items-end">
+              <span className="primary-color text-14 fw-bold">{art.title}</span>
+              <span>{firebaseTimestampToString(art.created)}</span>
+            </div>
           </div>
           <span className="text-5 fontSecondary mt-2">{art.description}</span>
           <div className="fw-bold fontSecondary text-5">
@@ -79,7 +84,7 @@ export default function Page({
           <hr />
           <CreateComment postId={art.artId} commentsParentRef={commentRef} />
           <div className="d-flex flex-column gap-1 mb-1 pt-3" ref={commentRef}>
-            {postComments.map((comment) => {
+            {postComments.slice(0, sliceNum).map((comment) => {
               return (
                 <React.Fragment key={comment.commentId}>
                   <Comment comment={comment} highlighted={false} />
@@ -87,6 +92,23 @@ export default function Page({
               );
             })}
           </div>
+          {!seeAll && (
+            <IconButton
+              disableRipple
+              disableTouchRipple
+              disableFocusRipple
+              size="small"
+              sx={{
+                outline: "none !important",
+                width: "140px",
+                my: 1,
+              }}
+              color="info"
+              onClick={() => setSeeAll(true)}
+            >
+              See all
+            </IconButton>
+          )}
         </div>
         <ProfileInfo
           uid={authorProfile.uid}

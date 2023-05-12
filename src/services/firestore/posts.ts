@@ -55,7 +55,7 @@ export const getCommentsOfCurrentPost = async (postId: string) => {
       .collection("gallery")
       .doc(postId)
       .collection("comments")
-      .orderBy("created", "asc")
+      .orderBy("created", "desc")
       .get();
     const comments = commentsDocs.docs.map(
       (comment) => comment.data() as Comment

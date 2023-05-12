@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import CommentAvatar from "./CommentAvatar";
 import { CommentsProps } from "@/models/Comment";
+import { Typography } from "@mui/material";
 
 export default function Comment({
   comment,
@@ -22,10 +23,12 @@ export default function Comment({
       <Box
         className="text-4"
         sx={{
-          color: "#949494",
+          color: "text.secondary",
+          px: 1,
+          py: 0.5,
         }}
       >
-        {comment.commentText}
+        <Typography variant="subtitle1">{comment.commentText}</Typography>
       </Box>
     </Box>
   );
