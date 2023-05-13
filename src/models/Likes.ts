@@ -1,7 +1,7 @@
 export type Likes = {
-  smile: string [];
+  smile: string[];
   heart: string[];
-  bomb: string[];
+  shocked: string[];
   fire: string[];
-  sadness: string[];
-}
+  sad: string[];
+};

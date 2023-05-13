@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
@@ -7,12 +7,10 @@ import SendIcon from "@mui/icons-material/Send";
 import { auth } from "@/services/firebaseConfig";
 import FormControl from "@mui/material/FormControl";
 import InputTextFieldProps from "../inputFields/InputTextFieldState";
-import { createComment } from "@/services/firestore/posts";
 import Comment from ".";
 import ReactDOM from "react-dom";
 import { CommentsProps } from "@/models/Comment";
-import { sendNewNotification } from "@/services/firestore/notifications";
-import { sendFriendRequest } from "@/services/firestore/friendRequest";
+import { createComment } from "@/services/firestore/post/comments";
 
 export default function CreateComment({
   postId,

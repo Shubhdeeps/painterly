@@ -7,9 +7,14 @@ import fire from "./reactions/fire.json";
 import smile from "./reactions/smile.json";
 import shocked from "./reactions/shocked.json";
 import heart from "./reactions/heart.json";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
+import { capitalize } from "@mui/material";
 
 type Props = {
   type: "sad" | "smile" | "shocked" | "fire" | "heart";
+  doesCurrUserReacted: boolean;
+  handleClick: (type: "sad" | "smile" | "shocked" | "fire" | "heart") => void;
 };
 
 const animations = {
@@ -44,7 +49,11 @@ const padding = {
   heart: "1px",
 };
 
-export default function Animation({ type }: Props) {
+export default function Animation({
+  type,
+  doesCurrUserReacted,
+  handleClick,
+}: Props) {
   const animationData = animations[type];
   const defaultOptions = {
     loop: true,
@@ -56,24 +65,34 @@ export default function Animation({ type }: Props) {
   };
 
   return (
-    <IconButton
-      sx={{
-        outline: "none !important",
-      }}
-      size={"small"}
+    <Tooltip
+      placement="top"
+      title={type === "shocked" ? "Shocked" : capitalize(type)}
+      disableInteractive
+      TransitionComponent={Zoom}
     >
-      <Box
-        className="emoji-size"
+      <IconButton
+        onClick={() => handleClick(type)}
         sx={{
-          width: dimensions[type],
-          height: dimensions[type],
-          background: bgColors[type],
-          borderRadius: "50%",
-          margin: padding[type],
+          outline: "none !important",
+          padding: 0.3,
+          background: doesCurrUserReacted ? "#0090B4" : "",
         }}
+        size={"small"}
       >
-        <Lottie options={defaultOptions} width="100%" />
-      </Box>
-    </IconButton>
+        <Box
+          className="emoji-size"
+          sx={{
+            width: dimensions[type],
+            height: dimensions[type],
+            background: bgColors[type],
+            borderRadius: "50%",
+            margin: padding[type],
+          }}
+        >
+          <Lottie options={defaultOptions} width="100%" />
+        </Box>
+      </IconButton>
+    </Tooltip>
   );
 }

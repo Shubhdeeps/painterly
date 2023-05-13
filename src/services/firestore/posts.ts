@@ -1,12 +1,4 @@
-import {
-  Timestamp,
-  firestore,
-  timestamp,
-  auth,
-  storage,
-  FieldValue,
-} from "@/services/firebaseConfig";
-import firebase from "firebase";
+import { Timestamp, timestamp, auth, storage } from "@/services/firebaseConfig";
 import { Post } from "@/models/Post";
 import { collectionRef } from "./collectionOperations";
 import { v4 as uuidv4 } from "uuid";
@@ -43,63 +35,6 @@ export const getAllPosts = async (
     });
   } catch (e) {
     console.log(e);
-  }
-};
-
-import { usersCached } from "@/services/caching/caching";
-import { Comment, CommentsProps } from "@/models/Comment";
-
-export const getCommentsOfCurrentPost = async (postId: string) => {
-  try {
-    const commentsDocs = await firestore
-      .collection("gallery")
-      .doc(postId)
-      .collection("comments")
-      .orderBy("created", "desc")
-      .get();
-    const comments = commentsDocs.docs.map(
-      (comment) => comment.data() as Comment
-    );
-    const authorIds = comments.map((comment) => comment.authorId);
-    const uidsToBeFetched: string[] = [];
-
-    for (const uid of authorIds) {
-      if (!usersCached[uid]) {
-        uidsToBeFetched.push(uid);
-      }
-    }
-
-    const userProfileDocs = await Promise.all(
-      uidsToBeFetched.map((uid) => collectionRef.profile.doc(uid).get())
-    );
-    const profiles = userProfileDocs.map((doc) => doc.data());
-
-    //caching fetched profiles
-    profiles.forEach((profile) => {
-      if (profile) {
-        usersCached[profile.uid] = {
-          displayName: profile.displayName,
-          profileURL: profile.profileURL,
-        };
-      }
-    });
-
-    const data: CommentsProps[] = comments.map((comment) => {
-      return {
-        author: {
-          name: usersCached[comment.authorId].displayName,
-          profileURL: usersCached[comment.authorId].profileURL,
-          uid: comment.authorId,
-        },
-        commentText: comment.commentText,
-        date: comment.created,
-        isMentor: false,
-        commentId: comment.commentId,
-      };
-    });
-    return data;
-  } catch (err) {
-    console.log(err);
   }
 };
 
@@ -154,10 +89,10 @@ export const postNewArt = async (
       commentsCount: 0,
       created: timestamp,
       description,
-      bomb: [],
+      shocked: [],
       fire: [],
       heart: [],
-      sadness: [],
+      sad: [],
       smile: [],
       title,
     };
@@ -166,41 +101,6 @@ export const postNewArt = async (
   } catch (e: any) {
     return e.message;
   }
-};
-
-export const createComment = async (
-  postId: string,
-  commentText: string,
-  isMentor: boolean
-) => {
-  const author = auth.currentUser!;
-  const commentId = uuidv4();
-  const created = firebase.firestore.Timestamp.now();
-  const newComment: Comment = {
-    authorId: author?.uid!,
-    commentId,
-    commentText,
-    created,
-    parentId: postId,
-    isMentor,
-  };
-  await collectionRef.gallery
-    .doc(postId)
-    .collection("comments")
-    .doc(commentId)
-    .set(newComment);
-  const commentsProps: CommentsProps = {
-    author: {
-      name: author?.displayName!,
-      profileURL: author?.photoURL,
-      uid: author?.uid,
-    },
-    commentId,
-    commentText,
-    date: created,
-    isMentor: false,
-  };
-  return commentsProps;
 };
 
 export const getPostsBasedOnUid = async (

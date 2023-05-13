@@ -9,9 +9,9 @@ export interface Post {
   description: string;
   commentsCount: number;
   smile: string[];
-  sadness: string[];
+  sad: string[];
   heart: string[];
-  bomb: string[];
+  shocked: string[];
   fire: string[];
   category: string[];
 }

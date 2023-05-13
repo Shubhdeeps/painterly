@@ -1,3 +1,4 @@
+import React, { useRef, useEffect } from "react";
 import Loader from "@/components/loader/Loader";
 import Comment from "@/components/comment";
 import Likes from "@/components/singleArt/Likes";
@@ -7,18 +8,15 @@ import { getProfileByUID } from "@/services/firestore/profiles";
 import { CommentsProps } from "@/models/Comment";
 import { Post } from "@/models/Post";
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
 import { Profile } from "@/models/Profile";
-import {
-  getCommentsOfCurrentPost,
-  getGalleryPostBasedOnArtId,
-} from "@/services/firestore/posts";
+import { getGalleryPostBasedOnArtId } from "@/services/firestore/posts";
 import { Image } from "react-bootstrap";
-import { auth } from "@/services/firebaseConfig";
 import CreateComment from "@/components/comment/CreateComment";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
-import AnimatedPopUpReactionPallet from "@/components/reactions/AnimatedPopUpReactionPallet";
+import Reactions from "@/components/reactions/Reactions";
+import { getCommentsOfCurrentPost } from "@/services/firestore/post/comments";
+import { updateSadness } from "@/services/firestore/testing/testing";
 
 export default function Page({
   data,
@@ -36,8 +34,6 @@ export default function Page({
   if (router.isFallback) {
     return <Loader text="" />;
   }
-
-  const currUserId = auth.currentUser?.uid;
   const authorProfile = JSON.parse(author) as Profile;
   const art = JSON.parse(data) as Post;
   const postComments = JSON.parse(comments) as CommentsProps[];
@@ -57,16 +53,14 @@ export default function Page({
           />
 
           <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <AnimatedPopUpReactionPallet />
-            {/* {currUserId && (
-              <Likes
-                fired={art.fire.includes(currUserId)}
-                hearted={art.heart.includes(currUserId)}
-                isSad={art.sadness.includes(currUserId)}
-                isShocked={art.bomb.includes(currUserId)}
-                smiled={art.smile.includes(currUserId)}
-              />
-            )} */}
+            <Reactions
+              shocked={art.shocked}
+              fire={art.fire}
+              heart={art.heart}
+              sad={art.sad}
+              smile={art.smile}
+              postId={art.artId}
+            />
             <div className="text-6 fontSecondary d-flex flex-column align-items-end">
               <span className="primary-color text-14 fw-bold">{art.title}</span>
               <span>{firebaseTimestampToString(art.created)}</span>
@@ -92,7 +86,7 @@ export default function Page({
               );
             })}
           </div>
-          {!seeAll && (
+          {!seeAll && !!postComments.length && (
             <IconButton
               disableRipple
               disableTouchRipple

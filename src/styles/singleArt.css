@@ -8,4 +8,5 @@
 }
 .emoji-size:hover {
   transform: scale(1.6);
+  z-index: 99;
 }
