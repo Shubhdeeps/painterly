@@ -3,6 +3,9 @@ body {
   background: rgb(42, 42, 42) !important;
   height: 100vh;
 }
+a {
+  text-decoration: none !important;
+}
 .main-container {
   overflow: auto;
 }

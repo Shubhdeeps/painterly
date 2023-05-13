@@ -1,9 +1,11 @@
 import { FieldValue, auth, firestore } from "@/services/firebaseConfig";
+import { sendNewNotification } from "../../notifications/sendNotification";
 
-export function updateReactionOnPost(
+export async function updateReactionOnPost(
   postId: string,
   entity: "sad" | "smile" | "shocked" | "fire" | "heart",
-  status: "LIKE" | "DISLIKE"
+  status: "LIKE" | "DISLIKE",
+  artAuthorId: string
 ) {
   try {
     const uidOfLiker = auth.currentUser?.uid!;
@@ -17,6 +19,14 @@ export function updateReactionOnPost(
         .update({
           [entity]: FieldValue.arrayUnion(uidOfLiker),
         });
+
+      //don't send notification if its by curr user
+      sendNewNotification(
+        artAuthorId,
+        `liked your art.`,
+        "new-like",
+        `/art/${postId}`
+      );
     } else {
       firestore
         .collection("gallery")

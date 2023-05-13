@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Loader from "@/components/loader/Loader";
 import Comment from "@/components/comment";
-import Likes from "@/components/singleArt/Likes";
 import ProfileInfo from "@/components/userProfile/ProfileInfo";
 import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { getProfileByUID } from "@/services/firestore/profiles";
@@ -16,7 +15,9 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Reactions from "@/components/reactions/Reactions";
 import { getCommentsOfCurrentPost } from "@/services/firestore/post/comments";
-import { updateSadness } from "@/services/firestore/testing/testing";
+
+// ui components
+import Box from "@mui/material/Box";
 
 export default function Page({
   data,
@@ -40,11 +41,21 @@ export default function Page({
   const sliceNum = seeAll ? postComments.length : 5;
   return (
     <>
-      <section
-        className="d-flex profile-filter-container gap-2"
+      <Box
+        display="flex"
+        gap={2}
+        className="profile-filter-container"
         id="art-section"
       >
-        <div className="d-flex flex-column p-2 gap-2 ws-100 secondary-bg border-radius-14">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            p: 2,
+            gap: 2,
+          }}
+          className="ws-100 secondary-bg border-radius-14"
+        >
           <Image
             alt="image"
             ref={imageRef}
@@ -60,6 +71,7 @@ export default function Page({
               sad={art.sad}
               smile={art.smile}
               postId={art.artId}
+              artAuthorId={art.authorId}
             />
             <div className="text-6 fontSecondary d-flex flex-column align-items-end">
               <span className="primary-color text-14 fw-bold">{art.title}</span>
@@ -76,7 +88,12 @@ export default function Page({
             })}
           </div>
           <hr />
-          <CreateComment postId={art.artId} commentsParentRef={commentRef} />
+          <CreateComment
+            postId={art.artId}
+            commentsParentRef={commentRef}
+            postAuthorId={art.authorId}
+          />
+
           <div className="d-flex flex-column gap-1 mb-1 pt-3" ref={commentRef}>
             {postComments.slice(0, sliceNum).map((comment) => {
               return (
@@ -103,7 +120,7 @@ export default function Page({
               See all
             </IconButton>
           )}
-        </div>
+        </Box>
         <ProfileInfo
           uid={authorProfile.uid}
           name={authorProfile.displayName}
@@ -111,7 +128,7 @@ export default function Page({
           description={authorProfile.description}
           currentUserProfile={false}
         />
-      </section>
+      </Box>
     </>
   );
 }

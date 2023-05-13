@@ -1,11 +1,6 @@
 import { Timestamp } from "@/services/firebaseConfig";
 
-
-export const firebaseTimestampToString = (time: Timestamp) => {
-  const timestampSeconds = time.seconds;
-  const currentTime = Math.floor(Date.now() / 1000);
-  const seconds = currentTime - timestampSeconds;
-
+function secondsToString(seconds: number) {
   if (seconds < 60) {
     return `< 1 minute ago`;
   }
@@ -17,9 +12,23 @@ export const firebaseTimestampToString = (time: Timestamp) => {
   }
   if (seconds < 30 * 24 * 3600) {
     return `${Math.round(seconds / (24 * 3600))} days ago`;
-  } 
-    return `${Math.round(seconds / (24 * 3600 * 30))} months ago`;
-  
+  }
+  return `${Math.round(seconds / (24 * 3600 * 30))} months ago`;
+}
+
+export function timestampSecondsToString(timestampSeconds: number) {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const seconds = currentTime - timestampSeconds;
+
+  return secondsToString(seconds);
+}
+
+export const firebaseTimestampToString = (time: Timestamp) => {
+  const timestampSeconds = time.seconds;
+  const currentTime = Math.floor(Date.now() / 1000);
+  const seconds = currentTime - timestampSeconds;
+
+  return secondsToString(seconds);
 };
 
 export const firebaseTimestampToTime = (firebaseDate: Timestamp) => {
@@ -29,9 +38,7 @@ export const firebaseTimestampToTime = (firebaseDate: Timestamp) => {
   return time;
 };
 
-export const firebaseTimestampToDateString = (
-  firebaseDate: Timestamp
-) => {
+export const firebaseTimestampToDateString = (firebaseDate: Timestamp) => {
   const month = (firebaseDate.toDate().getMonth() + 1)
     .toString()
     .padStart(2, "0");
@@ -44,9 +51,7 @@ export const firebaseTimestampToDateString = (
   return `${dayOfTheMonth}/${month}/${year}`;
 };
 
-export const firebaseTimestampToDayNumber = (
-  firebaseDate: Timestamp
-) => {
+export const firebaseTimestampToDayNumber = (firebaseDate: Timestamp) => {
   const dayOfTheMonth = firebaseDate.toDate().getUTCDate();
   return dayOfTheMonth;
 };

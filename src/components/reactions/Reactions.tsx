@@ -18,6 +18,7 @@ type Props = {
   sad: string[];
   shocked: string[];
   postId: string;
+  artAuthorId: string;
 };
 export default function Reactions({
   heart,
@@ -26,6 +27,7 @@ export default function Reactions({
   sad,
   shocked,
   postId,
+  artAuthorId,
 }: Props) {
   const [reactions, setReaction] = useState({
     heart,
@@ -44,7 +46,7 @@ export default function Reactions({
     setOpen(true);
   };
 
-  const handleUserReacted = (
+  const handleUserReacted = async (
     type: "sad" | "smile" | "shocked" | "fire" | "heart"
   ) => {
     const { uid } = auth.currentUser!;
@@ -61,14 +63,14 @@ export default function Reactions({
       };
 
       //firebase add reaction
-      updateReactionOnPost(postId, type, "LIKE");
+      await updateReactionOnPost(postId, type, "LIKE", artAuthorId);
     } else {
       const newReactionWithSpecificType = newReactions[type].filter(
         (value) => value !== uid
       );
       newReactions[type] = newReactionWithSpecificType;
       //firebase remove reaction
-      updateReactionOnPost(postId, type, "DISLIKE");
+      await updateReactionOnPost(postId, type, "DISLIKE", artAuthorId);
     }
     setReaction(newReactions);
   };

@@ -3,38 +3,52 @@ import { Comment, CommentsProps } from "@/models/Comment";
 import firebase from "firebase";
 import { auth } from "@/services/firebaseConfig";
 import { collectionRef } from "../../collectionOperations";
+import { sendNewNotification } from "../../notifications/sendNotification";
+import { getCurrUserProfile } from "../../profile";
 
 export const createComment = async (
   postId: string,
   commentText: string,
-  isMentor: boolean
+  postAuthor: string
 ) => {
-  const author = auth.currentUser!;
-  const commentId = uuidv4();
-  const created = firebase.firestore.Timestamp.now();
-  const newComment: Comment = {
-    authorId: author?.uid!,
-    commentId,
-    commentText,
-    created,
-    parentId: postId,
-    isMentor,
-  };
-  await collectionRef.gallery
-    .doc(postId)
-    .collection("comments")
-    .doc(commentId)
-    .set(newComment);
-  const commentsProps: CommentsProps = {
-    author: {
-      name: author?.displayName!,
-      profileURL: author?.photoURL,
-      uid: author?.uid,
-    },
-    commentId,
-    commentText,
-    date: created,
-    isMentor: false,
-  };
-  return commentsProps;
+  try {
+    const author = await getCurrUserProfile();
+    const commentId = uuidv4();
+    const created = firebase.firestore.Timestamp.now();
+    const newComment: Comment = {
+      authorId: author?.uid!,
+      commentId,
+      commentText,
+      created,
+      parentId: postId,
+      isMentor: author.profileType === "Advisor",
+    };
+    await collectionRef.gallery
+      .doc(postId)
+      .collection("comments")
+      .doc(commentId)
+      .set(newComment);
+
+    sendNewNotification(
+      postAuthor,
+      "commented on your art.",
+      "new-comment",
+      `/art/${postId}`
+    );
+    const commentsProps: CommentsProps = {
+      author: {
+        name: author?.displayName!,
+        profileURL: author?.profileURL,
+        uid: author?.uid,
+      },
+      commentId,
+      commentText,
+      date: created,
+      isMentor: false,
+    };
+    return commentsProps;
+  } catch (e) {
+    console.log(e);
+    throw "Something went wrong!";
+  }
 };

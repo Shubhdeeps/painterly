@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import { auth, database } from "@/services/firebaseConfig";
 import { Notification } from "@/models/Notification";
 import DropDownMenu from "./DropDownMenu";
+import { notificationSorting } from "@/services/helperFunctions/notificationSorting";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -17,7 +18,8 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }));
 
 export default function Notifications() {
-  const [notificationCount, setNotificationCount] = useState(3);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { uid } = auth.currentUser!;
 
@@ -26,7 +28,15 @@ export default function Notifications() {
       const data = snapshot.val() as { [id: string]: Notification };
       if (data) {
         const count = Object.keys(data).length;
-        // setNotificationCount(count);
+        setNotificationCount(count);
+        const newUnSeenNotifications: Notification[] = [];
+        for (const key of Object.keys(data)) {
+          newUnSeenNotifications.push(data[key]);
+        }
+        setNotifications(newUnSeenNotifications);
+      } else {
+        setNotificationCount(0);
+        setNotifications([]);
       }
     });
   }, [uid]);
@@ -52,7 +62,11 @@ export default function Notifications() {
       >
         <NotificationsIcon sx={{ color: "text.secondary" }} fontSize="large" />
       </StyledBadge>
-      <DropDownMenu anchorEl={anchorEl} handleClose={handleClose} />
+      <DropDownMenu
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        notifications={notifications.sort(notificationSorting)}
+      />
     </IconButton>
   );
 }

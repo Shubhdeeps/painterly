@@ -15,9 +15,11 @@ import { createComment } from "@/services/firestore/post/comments";
 export default function CreateComment({
   postId,
   commentsParentRef,
+  postAuthorId,
 }: {
   postId: string;
   commentsParentRef: React.MutableRefObject<HTMLDivElement | null>;
+  postAuthorId: string;
 }) {
   const [commentText, setCommentText] = useState("");
   const [isLoding, setLoading] = useState(false);
@@ -26,7 +28,7 @@ export default function CreateComment({
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await createComment(postId, commentText, false);
+    const res = await createComment(postId, commentText, postAuthorId);
     console.log(res);
     setComments(res);
     setLoading(false);
@@ -34,12 +36,6 @@ export default function CreateComment({
   };
 
   useEffect(() => {
-    // sendNewNotification(
-    //   "18KG8ErcJ3hC9R7O001CLsBAKtA2",
-    //   "You have new notification",
-    //   "new-comment"
-    // );
-    // sendFriendRequest("shubhdeep");
     if (commentsParentRef.current && commented) {
       const allChildren = Array.prototype.slice.call(
         commentsParentRef.current.children
@@ -64,6 +60,7 @@ export default function CreateComment({
       // commentsParentRef.current.appendChild(child);
     }
   }, [commented, commentsParentRef]);
+
   return (
     <form onSubmit={handleSubmit}>
       <FormControl

@@ -1,17 +1,32 @@
 import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { Notification } from "@/models/Notification";
+import Link from "next/link";
+import { timestampSecondsToString } from "@/services/helperFunctions/firebaseTimestampToString";
+import {
+  markReadAll,
+  markReadBasedOnId,
+} from "@/services/firestore/notifications/markReadAll";
 
 export default function DropDownMenu({
   anchorEl,
   handleClose,
+  notifications,
 }: {
   anchorEl: HTMLElement | null;
   handleClose: () => void;
+  notifications: Notification[];
 }) {
+  const handleMarkReadAll = () => {
+    markReadAll();
+  };
+
+  const areNotificationsAvailable = !!notifications.length;
+
   return (
     <Menu
       sx={{
@@ -47,39 +62,63 @@ export default function DropDownMenu({
           Notifications
         </Typography>
       </Box>
-      <StyledMenuItem
-        name="Roger Black"
-        content="commented on your art"
-        handleClose={handleClose}
-        src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=1007"
-      />
-      <StyledMenuItem
-        name="Roger Black"
-        content="liked your art"
-        handleClose={handleClose}
-        src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=1007"
-      />
-      <StyledMenuItem
-        content="commented on your art"
-        name="Victoria"
-        handleClose={handleClose}
-        src="https://www.maxpixel.net/static/photo/1x/Young-Model-Person-Woman-Lady-Face-Female-Makeup-6109643.jpg"
-      />
-      <Divider />
-      <Box px={2.5}>
-        <IconButton
-          sx={{
-            outline: "none !important",
-            borderRadius: "5px !important",
-          }}
-          color="info"
+      {notifications.map((notification) => {
+        return (
+          <React.Fragment key={notification.id}>
+            <Link href={notification.redirectLink}>
+              <StyledMenuItem
+                notificationId={notification.id}
+                name={notification.senderName}
+                content={notification.content}
+                handleClose={handleClose}
+                src={notification.senderPhotoURL}
+                time={timestampSecondsToString(notification.created)}
+              />
+            </Link>
+          </React.Fragment>
+        );
+      })}
+      {areNotificationsAvailable ? (
+        <Box
+          px={2.5}
+          mt={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
         >
-          <DoneAllIcon fontSize="small" />
+          {/* <Divider /> */}
+          <IconButton
+            sx={{
+              outline: "none !important",
+              borderRadius: "5px !important",
+            }}
+            color="info"
+            onClick={handleMarkReadAll}
+          >
+            <DoneAllIcon fontSize="small" />
+            <Typography pl={1} variant="subtitle2">
+              Mark all read
+            </Typography>
+          </IconButton>
+
+          <Button
+            variant="contained"
+            sx={{
+              outline: "none !important",
+              borderRadius: "5px !important",
+            }}
+            color="info"
+          >
+            See all
+          </Button>
+        </Box>
+      ) : (
+        <Box px={2}>
           <Typography pl={1} variant="subtitle2">
-            Mark all read
+            No notifications
           </Typography>
-        </IconButton>
-      </Box>
+        </Box>
+      )}
     </Menu>
   );
 }
@@ -89,19 +128,40 @@ const StyledMenuItem = ({
   src,
   name,
   content,
+  time,
+  notificationId,
 }: {
   handleClose: () => void;
-  src: string;
+  src: string | null;
   name: string;
   content: string;
-}) => (
-  <MenuItem onClick={handleClose}>
-    <Box px={1} display="flex" alignItems="center" gap={2}>
-      <Avatar src={src} />
-      <Typography variant="subtitle1">
-        <strong>{name} </strong>
-        {content}
-      </Typography>
-    </Box>
-  </MenuItem>
-);
+  time: string;
+  notificationId: string;
+}) => {
+  const handleReadSingleNotification = () => {
+    markReadBasedOnId(notificationId);
+    handleClose();
+  };
+  return (
+    <MenuItem onClick={handleReadSingleNotification}>
+      <Box px={1} display="flex" alignItems="center" gap={2}>
+        <Avatar src={src ? src : name.charAt(0)} />
+        <Box display="flex" flexDirection="column">
+          <Typography variant="subtitle1">
+            <strong>{name} </strong>
+            {content}
+          </Typography>
+          <Typography
+            sx={{
+              color: "text.secondary",
+              marginTop: "-6px",
+            }}
+            variant="caption"
+          >
+            {time}
+          </Typography>
+        </Box>
+      </Box>
+    </MenuItem>
+  );
+};
