@@ -24,8 +24,6 @@ export default function FetchFireData({
   //   return function Fetch() {
   const router = useRouter();
   const filterName = router.asPath.split("/")[2]; // filter name
-  console.log("FILTER NAME: ", filterName);
-  //   const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
 
   const [hasMore, setHasMore] = useState(true);
   //   const [art, setArt] = useState<any>();
@@ -90,9 +88,6 @@ export default function FetchFireData({
       setPosts((prevPosts) => [...prevPosts, ...renderPosts]);
     }
   }, [renderPosts]);
-  //   if (!!imageCordinates) {
-  //     return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
-  //   }
 
   // for animated popup single image
   const handleOpenImage = (cordinations: any, post: any) => {

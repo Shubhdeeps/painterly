@@ -2,6 +2,10 @@ import Link from "next/link";
 import React from "react";
 import { Image } from "react-bootstrap";
 import OutlinedButton from "../Sidebar/OutlinedButton";
+import { auth } from "@/services/firebaseConfig";
+import Connection from "./components/Connection";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 type Props = {
   name: string;
@@ -17,6 +21,8 @@ export default function ProfileInfo({
   currentUserProfile,
   uid,
 }: Props) {
+  const currUserId = auth.currentUser?.uid!;
+  const doesProfileBelongsToCurrUser = uid === currUserId;
   return (
     <div className="profile-container">
       <div className="d-flex flex-column gap-2 profile-container-child">
@@ -35,19 +41,27 @@ export default function ProfileInfo({
             </div>
           )}
           <div className="card-details">
-            <span className="fontPrimary text-3 ">{name}</span>
-            {/* <span className="fontSecondary mt--1">{username}</span> */}
+            <Typography variant="h6">{name}</Typography>
             {description && (
-              <span className="fontSecondary text-5 mt-2">{description}</span>
+              <Typography variant="caption" color="GrayText">
+                {description}
+              </Typography>
             )}
-            {currentUserProfile && (
-              <span className="mt-4">
-                <OutlinedButton
-                  type="button"
-                  title="Edit"
-                  onClick={() => console.log("click")}
-                />
-              </span>
+            {doesProfileBelongsToCurrUser ? (
+              <Button
+                sx={{
+                  borderRadius: "20px",
+                  px: 4,
+                  my: 1,
+                  outline: "none !important",
+                }}
+                color="secondary"
+                variant="outlined"
+              >
+                Manage
+              </Button>
+            ) : (
+              <Connection profileAuthorUid={uid} />
             )}
           </div>
         </div>

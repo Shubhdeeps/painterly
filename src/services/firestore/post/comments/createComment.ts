@@ -3,7 +3,7 @@ import { Comment, CommentsProps } from "@/models/Comment";
 import firebase from "firebase";
 import { auth } from "@/services/firebaseConfig";
 import { collectionRef } from "../../collectionOperations";
-import { sendNewNotification } from "../../notifications/sendNotification";
+import { sendNewNotification } from "../../../realtimeDB/notifications/sendNotification";
 import { getCurrUserProfile } from "../../profile";
 
 export const createComment = async (
@@ -29,12 +29,7 @@ export const createComment = async (
       .doc(commentId)
       .set(newComment);
 
-    sendNewNotification(
-      postAuthor,
-      "commented on your art.",
-      "new-comment",
-      `/art/${postId}`
-    );
+    sendNewNotification(postAuthor, "commented on your art.", `/art/${postId}`);
     const commentsProps: CommentsProps = {
       author: {
         name: author?.displayName!,

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import Person2Icon from "@mui/icons-material/Person2";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { auth, database } from "@/services/firebaseConfig";
-import { Notification } from "@/models/Notification";
 import DropDownMenu from "./DropDownMenu";
 import { notificationSorting } from "@/services/helperFunctions/notificationSorting";
+import { Notification } from "@/models/Notification";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -17,23 +17,23 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
-export default function Notifications() {
+export default function ConnectionRequest() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { uid } = auth.currentUser!;
 
   useEffect(() => {
-    database.ref("notifications/unseen/" + uid).on("value", (snapshot) => {
+    database.ref("requests/" + uid).on("value", (snapshot) => {
       const data = snapshot.val() as { [id: string]: Notification };
       if (data) {
         const count = Object.keys(data).length;
         setNotificationCount(count);
-        const newUnSeenNotifications: Notification[] = [];
+        const newUnSeenRequests: Notification[] = [];
         for (const key of Object.keys(data)) {
-          newUnSeenNotifications.push(data[key]);
+          newUnSeenRequests.push(data[key]);
         }
-        setNotifications(newUnSeenNotifications);
+        setNotifications(newUnSeenRequests);
       } else {
         setNotificationCount(0);
         setNotifications([]);
@@ -48,6 +48,7 @@ export default function Notifications() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <IconButton
       aria-label="cart"
@@ -60,10 +61,10 @@ export default function Notifications() {
         badgeContent={notificationCount}
         color="secondary"
       >
-        <NotificationsIcon sx={{ color: "text.secondary" }} fontSize="large" />
+        <Person2Icon sx={{ color: "text.secondary" }} fontSize="large" />
       </StyledBadge>
       <DropDownMenu
-        entity="Notifications"
+        entity="Connections"
         anchorEl={anchorEl}
         handleClose={handleClose}
         notifications={notifications.sort(notificationSorting)}

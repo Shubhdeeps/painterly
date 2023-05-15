@@ -1,5 +1,5 @@
 import { database } from "@/services/firebaseConfig";
-import { getCurrUserProfile } from "../profile";
+import { getCurrUserProfile } from "../../firestore/profile";
 import { Notification } from "@/models/Notification";
 
 export async function markReadAll() {

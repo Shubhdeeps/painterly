@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import Notifications from "../notifications/Notifications";
 import Searchbar from "./Searchbar";
 import Userprofile from "./Userprofile";
-import FriendRequest from "../notifications/FriendRequest";
+import ConnectionRequest from "../notifications/ConnectionRequest";
 import { Box } from "@mui/material";
 
 export default function TopBar({
@@ -26,7 +26,7 @@ export default function TopBar({
             </div>
           </div>
           <Box display="flex" gap={1} alignItems="center">
-            <FriendRequest />
+            <ConnectionRequest />
             <Notifications />
             <Userprofile />
           </Box>

@@ -6,19 +6,16 @@ export interface Notification {
   content: string;
   created: number;
   status: "unseen" | "seen" | "archived";
-  type: "new-comment" | "new-like" | "feedback-posted" | "following-you";
   redirectLink: string;
 }
 
-export interface FriendRequest {
+export interface ConnectionRequest {
   receiver: string;
-  sender: string;
-  senderPhotoURL: string;
+  senderPhotoURL: string | null;
   senderName: string;
   id: string;
   content: string;
   created: number;
-  status: "unseen" | "seen";
-  action: "accepted" | "rejected" | "pending";
+  status: "seen" | "unseen";
   redirectLink: string;
 }

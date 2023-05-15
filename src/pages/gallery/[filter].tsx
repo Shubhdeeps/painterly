@@ -9,9 +9,11 @@ const hashTitles = ["All", "Abstract", "Pencil", "Colorful", "Anime"];
 export default function Page() {
   const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
   const [art, setArt] = useState<any>();
+
   if (!!imageCordinates) {
     return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
   }
+
   return (
     <div>
       <Header title="GALLERY" />

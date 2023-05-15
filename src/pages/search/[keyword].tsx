@@ -1,5 +1,5 @@
 import Header from "@/components/headings/Header";
-import Member from "@/components/userProfile/Member";
+import Member from "@/components/userProfile/components/Member";
 import { useRouter } from "next/router";
 import React from "react";
 

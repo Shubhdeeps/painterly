@@ -4,7 +4,7 @@ import { Profile } from "@/models/Profile";
 import { Post } from "@/models/Post";
 import { Comment } from "@/models/Comment";
 import { ArtRequests } from "@/models/Requests";
-import { UserCommunity } from "@/models/UserFollowers";
+import { UserRelations } from "@/models/userRelations";
 
 const collectionRefWithType = <Type>(collectionName: string) =>
   firestore.collection(
@@ -26,5 +26,5 @@ export const collectionRef = {
   comments: (postId: string) =>
     subCollectionRefWithType<Comment, Post>(postId, "comments", "gallery"),
   artRequests: collectionRefWithType<ArtRequests>("art_requests"),
-  userCommunity: collectionRefWithType<UserCommunity>("art_requests"),
+  userRelations: collectionRefWithType<UserRelations>("userRelations"),
 };

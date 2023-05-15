@@ -1,5 +1,5 @@
 import { FieldValue, auth, firestore } from "@/services/firebaseConfig";
-import { sendNewNotification } from "../../notifications/sendNotification";
+import { sendNewNotification } from "../../../realtimeDB/notifications/sendNotification";
 
 export async function updateReactionOnPost(
   postId: string,
@@ -21,12 +21,7 @@ export async function updateReactionOnPost(
         });
 
       //don't send notification if its by curr user
-      sendNewNotification(
-        artAuthorId,
-        `liked your art.`,
-        "new-like",
-        `/art/${postId}`
-      );
+      sendNewNotification(artAuthorId, `liked your art.`, `/art/${postId}`);
     } else {
       firestore
         .collection("gallery")

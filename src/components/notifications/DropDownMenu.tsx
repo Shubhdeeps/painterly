@@ -10,13 +10,15 @@ import { timestampSecondsToString } from "@/services/helperFunctions/firebaseTim
 import {
   markReadAll,
   markReadBasedOnId,
-} from "@/services/firestore/notifications/markReadAll";
+} from "@/services/realtimeDB/notifications/markReadAll";
 
 export default function DropDownMenu({
+  entity,
   anchorEl,
   handleClose,
   notifications,
 }: {
+  entity: "Notifications" | "Connections";
   anchorEl: HTMLElement | null;
   handleClose: () => void;
   notifications: Notification[];
@@ -59,7 +61,7 @@ export default function DropDownMenu({
         }}
       >
         <Typography variant="h5" sx={{}}>
-          Notifications
+          {entity}
         </Typography>
       </Box>
       {notifications.map((notification) => {
@@ -86,7 +88,6 @@ export default function DropDownMenu({
           alignItems="center"
           justifyContent="space-between"
         >
-          {/* <Divider /> */}
           <IconButton
             sx={{
               outline: "none !important",
@@ -115,7 +116,7 @@ export default function DropDownMenu({
       ) : (
         <Box px={2}>
           <Typography pl={1} variant="subtitle2">
-            No notifications
+            No new {entity}
           </Typography>
         </Box>
       )}

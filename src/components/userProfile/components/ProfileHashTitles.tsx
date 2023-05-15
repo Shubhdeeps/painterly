@@ -1,19 +1,17 @@
-import { useRouter } from "next/router";
-import React from "react";
-import SecondaryHighlighter2 from "../highlighter/SecondaryHighlighter2";
+import React, { useState } from "react";
+import SecondaryHighlighter2 from "../../highlighter/SecondaryHighlighter2";
 
 export default function ProfileHashTitles({
   hashTitles,
-  parentPath,
+  currentPage,
+  setCurrentPage,
 }: {
   hashTitles: string[];
-  parentPath: string;
+  currentPage: string;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const router = useRouter();
-  const { filter } = router.query;
-
   return (
-    <div className="d-flex justify-content-center ps-2 flex-wrap gap-4 text-3 mb-4 letter-spacing">
+    <div className="d-flex justify-content-start ps-2 flex-wrap gap-4 text-3 mb-4 mt-1 letter-spacing">
       {hashTitles.map((title) => (
         <div
           className="d-flex align-items-center justify-content-center"
@@ -21,13 +19,13 @@ export default function ProfileHashTitles({
         >
           <span
             className="cursor noselect z-1"
-            onClick={() => router.push(`/${parentPath}/${title.toLowerCase()}`)}
+            onClick={() => setCurrentPage(title.toLowerCase())}
             key={title}
           >
             {title}
           </span>
           <span className="position-absolute z-0">
-            {title.toLowerCase() === filter && <SecondaryHighlighter2 />}
+            {title.toLowerCase() === currentPage && <SecondaryHighlighter2 />}
           </span>
         </div>
       ))}

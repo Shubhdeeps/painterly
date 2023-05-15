@@ -1,7 +1,14 @@
-import { Timestamp, timestamp, auth, storage } from "@/services/firebaseConfig";
+import {
+  Timestamp,
+  timestamp,
+  auth,
+  storage,
+  serverTimestamp,
+} from "@/services/firebaseConfig";
 import { Post } from "@/models/Post";
 import { collectionRef } from "./collectionOperations";
 import { v4 as uuidv4 } from "uuid";
+import { updateCurrUserPoolOnNewPost } from "../realtimeDB/userPostsPool/createUserPool";
 
 const AMOUNT_TO_BE_FETCHED = 10;
 // let firstLoad = true;
@@ -87,7 +94,7 @@ export const postNewArt = async (
       authorId: currentUser!,
       category,
       commentsCount: 0,
-      created: timestamp,
+      created: serverTimestamp.now(),
       description,
       shocked: [],
       fire: [],
@@ -97,6 +104,7 @@ export const postNewArt = async (
       title,
     };
     const res = await collectionRef.gallery.doc(newId).set(NewPost);
+    updateCurrUserPoolOnNewPost(NewPost);
     return res;
   } catch (e: any) {
     return e.message;

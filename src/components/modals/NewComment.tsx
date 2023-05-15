@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import InputTextArea from "../inputFields/InputTextArea";
 import OutlinedButton from "../Sidebar/OutlinedButton";
-import Member from "../userProfile/Member";
+import Member from "../userProfile/components/Member";
 
 export default function NewComment() {
   const commentRf = useRef("");

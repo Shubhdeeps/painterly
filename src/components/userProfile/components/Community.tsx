@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Member from "./Member";
 
 export default function Community() {
+  const [currentCommunity, setCurrentCommunity] = useState<
+    "connections" | "followers"
+  >("connections");
   return (
     <div className="w-100 secondary-bg border-radius-14 p-4">
       <div className="d-flex gap-3 noselect">
-        <span>Friends</span>
-        <span className="fontSecondary">Followers</span>
-        <span className="fontSecondary">Following</span>
+        <span
+          className={
+            currentCommunity === "connections" ? "" : "fontSecondary cursor"
+          }
+          onClick={() => setCurrentCommunity("connections")}
+        >
+          Connections
+        </span>
+        {/* CAN BE ENABLED IN FUTURE! */}
+        {/* <span
+          className={
+            currentCommunity === "followers" ? "" : "fontSecondary cursor"
+          }
+          onClick={() => setCurrentCommunity("followers")}
+        >
+          Followers
+        </span> */}
       </div>
       <div className="secondaryTransparent-bg border-radius-14 d-flex flex-wrap gap-4 p-3 mt-4">
         {users.map((user) => {
