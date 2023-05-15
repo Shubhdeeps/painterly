@@ -4,9 +4,6 @@ import React from "react";
 import google from "../../assets/logo/google.png";
 
 export default function Authenticate() {
-  // const handleSignIn = () => {
-  //   signInWithGoogle();
-  // };
   return (
     <div
       className="d-flex justify-content-center align-items-center"

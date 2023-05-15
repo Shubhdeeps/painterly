@@ -27,5 +27,3 @@ const updateProfilePic = async (image: File) => {
   });
 };
 // read about namedQuery
-
-const getProfiles = (uid: string) => {};

@@ -17,10 +17,10 @@ const requestAction: { [key in Request]: Request } = {
 };
 
 const requestButtonName: { [key in Request]: string } = {
-  REQUEST: "CANCEL REQUEST",
-  DISCONNECT: "REQUEST TO CONNECT",
-  "CANCEL-REQUEST": "REQUEST TO CONNECT",
-  ACCEPT: "DISCONNECT",
+  REQUEST: "REQUEST TO CONNECT",
+  DISCONNECT: "REQUEST",
+  "CANCEL-REQUEST": "CANCEL REQUEST",
+  ACCEPT: "ACCEPT REQUEST",
 };
 
 const followAction: { [key in Follow]: Follow } = {
@@ -29,8 +29,8 @@ const followAction: { [key in Follow]: Follow } = {
 };
 
 const followButtonName: { [key in Follow]: string } = {
-  "UN-FOLLOW": "FOLLOW",
-  FOLLOW: "UNFOLLOW",
+  "UN-FOLLOW": "UNFOLLOW",
+  FOLLOW: "FOLLOW",
 };
 
 export default function Connection({
