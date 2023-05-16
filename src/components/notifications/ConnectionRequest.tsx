@@ -6,7 +6,8 @@ import { styled } from "@mui/material/styles";
 import { auth, database } from "@/services/firebaseConfig";
 import DropDownMenu from "./DropDownMenu";
 import { notificationSorting } from "@/services/helperFunctions/notificationSorting";
-import { Notification } from "@/models/Notification";
+import { ConnectionRequestModel } from "@/models/Notification";
+import { seenCurrUserRequestNotification } from "@/services/realtimeDB/relations/requests/seenRequestNotifications";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -19,19 +20,32 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 export default function ConnectionRequest() {
   const [notificationCount, setNotificationCount] = useState(0);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<ConnectionRequestModel[]>(
+    []
+  );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { uid } = auth.currentUser!;
 
   useEffect(() => {
     database.ref("requests/" + uid).on("value", (snapshot) => {
-      const data = snapshot.val() as { [id: string]: Notification };
+      const data = snapshot.val() as {
+        [id: string]: ConnectionRequestModel;
+      };
+
       if (data) {
         const count = Object.keys(data).length;
         setNotificationCount(count);
-        const newUnSeenRequests: Notification[] = [];
+        const newUnSeenRequests: ConnectionRequestModel[] = [];
         for (const key of Object.keys(data)) {
-          newUnSeenRequests.push(data[key]);
+          // check if the requests are seen
+          const requestData = data[key];
+          if (
+            requestData.status === "unseen" ||
+            requestData.type === "REQUEST"
+          ) {
+            // only push if its either unseen or type of REQUEST
+            newUnSeenRequests.push(requestData);
+          }
         }
         setNotifications(newUnSeenRequests);
       } else {
@@ -47,6 +61,11 @@ export default function ConnectionRequest() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMarkAllRead = () => {
+    const uids = notifications.map((notification) => notification.senderUid);
+    seenCurrUserRequestNotification(uids);
   };
 
   return (
@@ -68,6 +87,7 @@ export default function ConnectionRequest() {
         anchorEl={anchorEl}
         handleClose={handleClose}
         notifications={notifications.sort(notificationSorting)}
+        markReadAll={handleMarkAllRead}
       />
     </IconButton>
   );

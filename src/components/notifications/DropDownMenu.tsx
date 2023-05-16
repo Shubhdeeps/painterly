@@ -1,27 +1,27 @@
 import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, Divider } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import { Notification } from "@/models/Notification";
+import { ConnectionRequestModel, Notification } from "@/models/Notification";
 import Link from "next/link";
 import { timestampSecondsToString } from "@/services/helperFunctions/firebaseTimestampToString";
-import {
-  markReadAll,
-  markReadBasedOnId,
-} from "@/services/realtimeDB/notifications/markReadAll";
+import { markReadBasedOnId } from "@/services/realtimeDB/notifications/markReadAll";
+import { connectWithNewUser } from "@/services/realtimeDB/relations";
 
 export default function DropDownMenu({
   entity,
   anchorEl,
   handleClose,
   notifications,
+  markReadAll,
 }: {
   entity: "Notifications" | "Connections";
   anchorEl: HTMLElement | null;
   handleClose: () => void;
-  notifications: Notification[];
+  notifications: (Notification | ConnectionRequestModel)[];
+  markReadAll: () => void;
 }) {
   const handleMarkReadAll = () => {
     markReadAll();
@@ -75,6 +75,8 @@ export default function DropDownMenu({
                 handleClose={handleClose}
                 src={notification.senderPhotoURL}
                 time={timestampSecondsToString(notification.created)}
+                type={notification.type}
+                otherUserId={notification.senderUid}
               />
             </Link>
           </React.Fragment>
@@ -131,6 +133,8 @@ const StyledMenuItem = ({
   content,
   time,
   notificationId,
+  type,
+  otherUserId,
 }: {
   handleClose: () => void;
   src: string | null;
@@ -138,13 +142,29 @@ const StyledMenuItem = ({
   content: string;
   time: string;
   notificationId: string;
+  type: string;
+  otherUserId: string;
 }) => {
   const handleReadSingleNotification = () => {
     markReadBasedOnId(notificationId);
     handleClose();
   };
+
+  const handleRequestAction = (action: "ACCEPT" | "REJECT") => {
+    connectWithNewUser(otherUserId, action);
+  };
+
   return (
-    <MenuItem onClick={handleReadSingleNotification}>
+    <MenuItem
+      onClick={handleReadSingleNotification}
+      sx={{
+        // borderBottom: "1px solid #fff",
+        my: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "start",
+      }}
+    >
       <Box px={1} display="flex" alignItems="center" gap={2}>
         <Avatar src={src ? src : name.charAt(0)} />
         <Box display="flex" flexDirection="column">
@@ -163,6 +183,30 @@ const StyledMenuItem = ({
           </Typography>
         </Box>
       </Box>
+
+      {type === "REQUEST" && (
+        <Box display="flex" alignItems="center" my={1}>
+          <Button
+            sx={{
+              fontWeight: 700,
+              outline: "none !important",
+            }}
+            color="secondary"
+            onClick={() => handleRequestAction("ACCEPT")}
+          >
+            Accept
+          </Button>
+          <Button
+            sx={{
+              color: "text.primary",
+              outline: "none !important",
+            }}
+            onClick={() => handleRequestAction("REJECT")}
+          >
+            Reject
+          </Button>
+        </Box>
+      )}
     </MenuItem>
   );
 };

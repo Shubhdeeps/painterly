@@ -7,6 +7,7 @@ import { auth, database } from "@/services/firebaseConfig";
 import { Notification } from "@/models/Notification";
 import DropDownMenu from "./DropDownMenu";
 import { notificationSorting } from "@/services/helperFunctions/notificationSorting";
+import { markReadAll } from "@/services/realtimeDB/notifications/markReadAll";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -67,6 +68,7 @@ export default function Notifications() {
         anchorEl={anchorEl}
         handleClose={handleClose}
         notifications={notifications.sort(notificationSorting)}
+        markReadAll={markReadAll}
       />
     </IconButton>
   );

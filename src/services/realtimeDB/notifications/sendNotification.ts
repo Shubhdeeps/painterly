@@ -23,8 +23,9 @@ export async function sendNewNotification(
     senderName: currUserProfile.displayName,
     senderPhotoURL: currUserProfile.profileURL,
     status: "unseen",
-
+    type: "UNKNOWN",
     redirectLink,
+    senderUid: currUserProfile.uid,
   };
   try {
     database

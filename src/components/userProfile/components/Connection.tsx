@@ -18,7 +18,7 @@ const requestAction: { [key in Request]: Request } = {
 
 const requestButtonName: { [key in Request]: string } = {
   REQUEST: "REQUEST TO CONNECT",
-  DISCONNECT: "REQUEST",
+  DISCONNECT: "DISCONNECT",
   "CANCEL-REQUEST": "CANCEL REQUEST",
   ACCEPT: "ACCEPT REQUEST",
 };
@@ -80,9 +80,9 @@ export default function Connection({
     setCurrUserRelation(requestAction[action]);
     connectWithNewUser(profileAuthorUid, action);
   };
-  const handleFollow = (action: Follow) => {
-    setFollowStatus(followAction[action]);
-    connectWithNewUser(profileAuthorUid, action);
+  const handleFollow = (actionFollow: Follow) => {
+    setFollowStatus(followAction[actionFollow]);
+    connectWithNewUser(profileAuthorUid, actionFollow);
   };
   return (
     <Box display="flex" flexDirection="column" alignItems="center" mt={1}>
