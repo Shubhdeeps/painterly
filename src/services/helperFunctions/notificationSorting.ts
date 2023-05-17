@@ -1,7 +1,10 @@
-import { Notification } from "@/models/Notification";
+import { Notification, ConnectionRequestModel } from "@/models/Notification";
 
 //created desc order
-export function notificationSorting(a: Notification, b: Notification) {
+export function notificationSorting(
+  a: Notification | ConnectionRequestModel,
+  b: Notification | ConnectionRequestModel
+) {
   if (a.created < b.created) {
     return 1;
   }
