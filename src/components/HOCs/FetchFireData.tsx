@@ -21,7 +21,7 @@ export default function FetchFireData({
   setArt: Function;
   setImageCordinates: Function;
   breakpointColumnsObj: any;
-  entity: "GALLERY" | "COMMUNITY" | "FAVORITE";
+  entity: "GALLERY" | "COMMUNITY" | "FAVORITE" | "PROFILE";
 }) {
   //   return function Fetch() {
   const router = useRouter();

@@ -13,7 +13,7 @@ export default function HashTitles({
   const currPathName = router.asPath.split("/")[2];
 
   return (
-    <div className="d-flex justify-content-center flex-wrap gap-4 text-3 mb-5 letter-spacing">
+    <div className="ms-2 d-flex justify-content-start flex-wrap gap-4 text-3 mb-5 letter-spacing">
       {hashTitles.map((title) => (
         <div
           className="d-flex align-items-center justify-content-center"

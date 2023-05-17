@@ -11,7 +11,7 @@ import NewPost from "../modals/NewPost";
 
 const paths: { [title: string]: "GALLERY" | "PAINTERLY" } = {
   gallery: "GALLERY",
-  friends: "GALLERY",
+  community: "GALLERY",
   favourite: "GALLERY",
   requested: "GALLERY",
   faqs: "PAINTERLY",
@@ -69,8 +69,8 @@ export default function Sidebar({
             />
             <NavButton
               setSideBarFlex={setSideBarFlex}
-              path="/friends"
-              title="Friends"
+              path="/community"
+              title="Community"
             />
             <NavButton
               setSideBarFlex={setSideBarFlex}

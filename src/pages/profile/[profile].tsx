@@ -5,23 +5,17 @@ import ProfileInfo from "@/components/userProfile/ProfileInfo";
 import { Profile } from "@/models/Profile";
 import { getProfileByUID } from "@/services/firestore/profiles";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getPostsBasedOnUid } from "@/services/firestore/posts";
 import SingleArtLoader from "@/components/loader/SingleArtLoader";
 import ProfileHashTitles from "@/components/userProfile/components/ProfileHashTitles";
 import Community from "@/components/userProfile/components/Community";
-import { connectWithNewUser } from "@/services/realtimeDB/relations/connectWithNewUser";
 export default function Index({ author }: { author: string }) {
   const router = useRouter();
   const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
   const [art, setArt] = useState<any>();
   const [currentPage, setCurrentPage] = useState("posts");
 
-  // useEffect(() => {
-  //   (async function () {
-  //     await connectWithNewUser("testing", "FOLLOW");
-  //   })();
-  // }, []);
   if (router.isFallback) {
     return <Loader text="" />;
   }
@@ -31,6 +25,12 @@ export default function Index({ author }: { author: string }) {
     return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
   }
 
+  const getPostsBasedOnUidFiltered = (
+    lastPostDate: any,
+    filter: string | undefined
+  ) => {
+    return getPostsBasedOnUid(lastPostDate, authorProfile.uid);
+  };
   return (
     <section className="d-flex profile-filter-container gap-2">
       <div className="d-flex flex-column ws-100">
@@ -41,13 +41,14 @@ export default function Index({ author }: { author: string }) {
         />
         {currentPage === "posts" ? (
           <FetchFireData
+            entity="GALLERY"
             breakpointColumnsObj={{
               default: 2,
               770: 1,
             }}
             setArt={setArt}
             setImageCordinates={setImageCordinates}
-            getPosts={getPostsBasedOnUid}
+            getPosts={getPostsBasedOnUidFiltered}
           />
         ) : (
           <Community />

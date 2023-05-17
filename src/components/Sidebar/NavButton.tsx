@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 const paths: { [title: string]: string } = {
   gallery: "gallery",
-  friends: "friends",
+  community: "community",
   favourite: "favourite",
   requested: "requested",
   faqs: "faqs",
