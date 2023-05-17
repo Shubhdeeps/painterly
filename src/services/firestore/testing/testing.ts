@@ -1,16 +1,30 @@
+import { database } from "@/services/firebaseConfig";
 import { collectionRef } from "../collectionOperations";
 
-export async function updateSadness() {
-  console.log("updating");
-
+export async function updateUserPool() {
   const gallery = await collectionRef.gallery.get();
-  const galleryIds = gallery.docs.map((va) => va.id);
-
-  for (const item of galleryIds) {
-    collectionRef.gallery.doc(item).update({
-      sad: [],
-      shocked: [],
-    });
+  const galleryDocs = gallery.docs.map((x) => x.data());
+  const usersAndPostsPool: {
+    [authorId: string]: {
+      [createdSeconds: number]: string;
+    };
+  } = {};
+  for (const post of galleryDocs) {
+    const userPosts = usersAndPostsPool[post.authorId];
+    if (!userPosts) {
+      usersAndPostsPool[post.authorId] = {
+        [post.created.seconds]: post.artId,
+      };
+    } else {
+      usersAndPostsPool[post.authorId] = {
+        ...userPosts,
+        [post.created.seconds]: post.artId,
+      };
+    }
   }
-  console.log("updated!!");
+
+  for (const authorId of Object.keys(usersAndPostsPool)) {
+    database.ref("pool/" + authorId).set(usersAndPostsPool[authorId]);
+  }
+  console.log("success!!");
 }

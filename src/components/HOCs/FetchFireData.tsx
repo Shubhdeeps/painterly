@@ -12,14 +12,16 @@ export default function FetchFireData({
   setArt,
   setImageCordinates,
   breakpointColumnsObj,
+  entity,
 }: {
   getPosts: (
-    lastPostDate: Timestamp | undefined,
-    filter: string
+    lastPostDate: any,
+    filter: string | undefined
   ) => Promise<Post[] | null | undefined>;
   setArt: Function;
   setImageCordinates: Function;
   breakpointColumnsObj: any;
+  entity: "GALLERY" | "COMMUNITY" | "FAVORITE";
 }) {
   //   return function Fetch() {
   const router = useRouter();
@@ -43,16 +45,20 @@ export default function FetchFireData({
     // for clearing when filter change
     setPosts([]);
     setHasMore(true);
-
-    getPosts(undefined, filterName).then((res) => {
+    const lastPost = entity === "GALLERY" ? undefined : 0;
+    getPosts(lastPost, filterName).then((res) => {
       if (res) {
         setFreshPosts(res);
         if (res.length < 10) {
           setHasMore(false);
         }
+        if (res.length === 0) {
+          // no posts to show
+          setIsLoading(false);
+        }
       }
     });
-  }, [filterName, getPosts]);
+  }, [entity, filterName, getPosts]);
 
   useEffect(() => {
     if (!!freshPosts.length) {
@@ -69,7 +75,9 @@ export default function FetchFireData({
     }
     if (inView && !!posts.length) {
       const lastPost = posts[posts.length - 1].created;
-      getPosts(lastPost, filterName).then((res) => {
+      const lastItem = entity === "GALLERY" ? lastPost : posts.length;
+
+      getPosts(lastItem, filterName).then((res) => {
         if (res === null) {
           return;
         }
@@ -81,7 +89,7 @@ export default function FetchFireData({
         }
       });
     }
-  }, [filterName, getPosts, hasMore, inView, posts]);
+  }, [entity, filterName, getPosts, hasMore, inView, posts]);
 
   useEffect(() => {
     if (!!renderPosts.length) {
@@ -114,6 +122,7 @@ export default function FetchFireData({
             </React.Fragment>
           );
         })}
+        {posts.length === 0 && <h6>No posts to load.</h6>}
         {isLoading && <Loader text="" />}
         <div ref={ref}></div>
       </Masonry>

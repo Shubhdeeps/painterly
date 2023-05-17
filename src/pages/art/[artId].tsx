@@ -15,9 +15,16 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Reactions from "@/components/reactions/Reactions";
 import { getCommentsOfCurrentPost } from "@/services/firestore/post/comments";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 // ui components
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
+import {
+  doesCurrArtFavoriteByCurrUser,
+  updateUserFavorite,
+} from "@/services/realtimeDB/userFavorites";
 
 export default function Page({
   data,
@@ -30,15 +37,31 @@ export default function Page({
 }) {
   const router = useRouter();
   const [seeAll, setSeeAll] = useState(false);
+  const [isFavByCurrUser, setIsFavByCurrUser] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const commentRef = useRef<HTMLDivElement | null>(null);
+  const art = JSON.parse(data) as Post;
+  useEffect(() => {
+    (async () => {
+      if (art.artId) {
+        const favStatus = await doesCurrArtFavoriteByCurrUser(art.artId);
+        setIsFavByCurrUser(favStatus);
+      }
+    })();
+  }, [art.artId]);
+
   if (router.isFallback) {
     return <Loader text="" />;
   }
   const authorProfile = JSON.parse(author) as Profile;
-  const art = JSON.parse(data) as Post;
   const postComments = JSON.parse(comments) as CommentsProps[];
   const sliceNum = seeAll ? postComments.length : 5;
+
+  const handleChangeFavorite = (state: boolean) => {
+    setIsFavByCurrUser(state);
+    // update in db
+    updateUserFavorite(state ? "ADD" : "REMOVE", art.artId);
+  };
   return (
     <>
       <Box
@@ -87,6 +110,30 @@ export default function Page({
               return <span key={cat}> #{cat.toUpperCase()}</span>;
             })}
           </div>
+          <span>
+            <IconButton
+              sx={{
+                color: "secondary.main",
+                gap: 1,
+                outline: "none !important",
+                borderRadius: "10px !important",
+              }}
+              size="small"
+              onClick={() => handleChangeFavorite(!isFavByCurrUser)}
+            >
+              {isFavByCurrUser ? (
+                <>
+                  <StarIcon />
+                  Remove from favorite
+                </>
+              ) : (
+                <>
+                  <StarBorderIcon />
+                  Add to favorite
+                </>
+              )}
+            </IconButton>
+          </span>
           <hr />
           <CreateComment
             postId={art.artId}

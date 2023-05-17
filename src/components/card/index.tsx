@@ -71,18 +71,19 @@ function Card({ data, handleOpenPost }: Props) {
           <div className="border-btm"></div>
 
           <div className="text-5 noselect cursor d-flex justify-content-start gap-2">
-            {data.category.map((cat) => {
-              if (cat === "all") {
-                return null;
-              }
-              return (
-                <Link href={`/all/${cat}`} passHref key={cat}>
-                  <span className="fw-bold  fontSecondary hover-primary">
-                    #{cat.toUpperCase()}
-                  </span>
-                </Link>
-              );
-            })}
+            {!!data.category &&
+              data.category.map((cat) => {
+                if (cat === "all") {
+                  return null;
+                }
+                return (
+                  <Link href={`/all/${cat}`} passHref key={cat}>
+                    <span className="fw-bold  fontSecondary hover-primary">
+                      #{cat.toUpperCase()}
+                    </span>
+                  </Link>
+                );
+              })}
           </div>
         </div>
       </div>

@@ -5,9 +5,10 @@ import { getUserPoolBasedOnUid } from "@/services/realtimeDB/userPostsPool";
 export type ArrayOfUserRelationPool = { created: number; postId: string };
 export async function getPoolOfCurrUserRelations() {
   const currUserRelations = await getCurrUserRelation();
+
   const currUserRelationUids = [
     ...currUserRelations.connections,
-    ...currUserRelations.userFollowers,
+    ...currUserRelations.userFollowings,
   ];
 
   //eliminate duplicates

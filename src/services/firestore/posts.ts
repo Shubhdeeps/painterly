@@ -14,8 +14,11 @@ const AMOUNT_TO_BE_FETCHED = 10;
 // let firstLoad = true;
 export const getAllPosts = async (
   lastPostDate: Timestamp | undefined,
-  filter: string
+  filter: string | undefined
 ) => {
+  if (!filter) {
+    return [];
+  }
   try {
     let lastPost = timestamp;
 
