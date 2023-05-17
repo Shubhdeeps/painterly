@@ -16,15 +16,17 @@ export const signInWithGoogle = () => {
       //   // // The signed-in user info.
       const user = result.user;
       if (user) {
+        const displayName = user.displayName
+          ? user.displayName
+          : user.email!.split("@")[0];
         const newUser: Profile = {
           description: "",
-          displayName: user.displayName
-            ? user.displayName
-            : user.email!.split("@")[0],
+          displayName,
           followersCount: 0,
           profileType: "Trainee",
           profileURL: user.photoURL,
           uid: user.uid,
+          searchName: displayName.toLowerCase(),
         };
         collectionRef.profile.doc(user.uid).set(newUser);
       }

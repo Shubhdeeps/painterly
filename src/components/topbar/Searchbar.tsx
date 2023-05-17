@@ -12,7 +12,9 @@ export default function Searchbar({
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode == 13) {
       setSearchText("");
-      router.replace(`/search/${searchText}`);
+      if (!!searchText) {
+        router.replace(`/search/${searchText}`);
+      }
       if (setSideBarFlex) {
         setSideBarFlex(false);
       }

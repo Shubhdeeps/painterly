@@ -35,6 +35,7 @@ export default function Community() {
                 date={undefined}
                 src={user.src}
                 title={user.title}
+                uid={`testing`}
               />
             </React.Fragment>
           );

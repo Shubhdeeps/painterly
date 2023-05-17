@@ -5,7 +5,7 @@ import ProfileInfo from "@/components/userProfile/ProfileInfo";
 import { Profile } from "@/models/Profile";
 import { getProfileByUID } from "@/services/firestore/profiles";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getPostsBasedOnUid } from "@/services/firestore/posts";
 import SingleArtLoader from "@/components/loader/SingleArtLoader";
 import ProfileHashTitles from "@/components/userProfile/components/ProfileHashTitles";

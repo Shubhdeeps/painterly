@@ -5,4 +5,5 @@ export interface Profile {
   profileURL: string | null;
   followersCount: number;
   profileType: "Advisor" | "Trainee" | "Admin";
+  searchName: string;
 }
