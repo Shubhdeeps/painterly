@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Loader from "@/components/loader/Loader";
 import Comment from "@/components/comment";
-import ProfileInfo from "@/components/userProfile/ProfileInfo";
-import { firebaseTimestampToString } from "@/services/helperFunctions/firebaseTimestampToString";
 import { getProfileByUID } from "@/services/firestore/profiles";
 import { CommentsProps } from "@/models/Comment";
 import { Post } from "@/models/Post";
@@ -13,18 +11,20 @@ import { Image } from "react-bootstrap";
 import CreateComment from "@/components/comment/CreateComment";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
-import Reactions from "@/components/reactions/Reactions";
 import { getCommentsOfCurrentPost } from "@/services/firestore/post/comments";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 // ui components
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
 import {
   doesCurrArtFavoriteByCurrUser,
   updateUserFavorite,
 } from "@/services/realtimeDB/userFavorites";
+
+import NameAndReactionsWeb from "@/components/singleArt/NameAndReactions";
+import NameAndReactionsMobile from "@/components/singleArt/NameAndReactionMobile";
+import { Typography } from "@mui/material";
 
 export default function Page({
   data,
@@ -64,18 +64,13 @@ export default function Page({
   };
   return (
     <>
-      <Box
-        display="flex"
-        gap={2}
-        className="profile-filter-container"
-        id="art-section"
-      >
+      <Box display="flex" gap={2} id="art-section">
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             p: 2,
-            gap: 2,
+            gap: 1,
           }}
           className="ws-100 secondary-bg border-radius-14"
         >
@@ -86,22 +81,22 @@ export default function Page({
             src={art.artURL}
           />
 
-          <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <Reactions
-              shocked={art.shocked}
-              fire={art.fire}
-              heart={art.heart}
-              sad={art.sad}
-              smile={art.smile}
-              postId={art.artId}
-              artAuthorId={art.authorId}
-            />
-            <div className="text-6 fontSecondary d-flex flex-column align-items-end">
-              <span className="primary-color text-14 fw-bold">{art.title}</span>
-              <span>{firebaseTimestampToString(art.created)}</span>
-            </div>
-          </div>
-          <span className="text-5 fontSecondary mt-2">{art.description}</span>
+          <NameAndReactionsWeb art={art} authorProfile={authorProfile} />
+          <NameAndReactionsMobile art={art} authorProfile={authorProfile} />
+          <Typography
+            sx={{
+              height: "fit-content",
+              fontSize: {
+                xs: "16px",
+                sm: "20px",
+              },
+              fontWeight: 800,
+            }}
+            className="primary-color"
+          >
+            {art.title}
+          </Typography>
+          <span className="text-5 fontSecondary">{art.description}</span>
           <div className="fw-bold fontSecondary text-5">
             {art.category.map((cat) => {
               if (cat === "all") {
@@ -150,7 +145,7 @@ export default function Page({
               );
             })}
           </div>
-          {!seeAll && !!postComments.length && (
+          {!seeAll && !!postComments.length && postComments.length > 5 && (
             <IconButton
               disableRipple
               disableTouchRipple
@@ -168,13 +163,6 @@ export default function Page({
             </IconButton>
           )}
         </Box>
-        <ProfileInfo
-          uid={authorProfile.uid}
-          name={authorProfile.displayName}
-          imageURL={authorProfile.profileURL}
-          description={authorProfile.description}
-          currentUserProfile={false}
-        />
       </Box>
     </>
   );

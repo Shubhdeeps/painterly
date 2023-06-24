@@ -5,7 +5,7 @@ import Link from "next/link";
 type Props = {
   src: string | null | undefined;
   title: string;
-  date: string | undefined;
+  date?: string;
   size: "sm" | "md" | "lg";
   uid: string;
 };

@@ -96,13 +96,6 @@ export default function SingleArtLoader({
             <div className="d-flex flex-coloumn gap-2 flex-wrap justify-content-center"></div>
           </div>
         </div>
-        <div className="profile-container">
-          <div className="profile-container-child ">
-            <div className="profile-card secondary-bg border-radius-14">
-              <div className="profile-card-image border-radius-14  d-flex align-items-center justify-content-center image-skeleton"></div>
-            </div>
-          </div>
-        </div>
       </section>
       <div className="position-absolute w-100 h-100 body-bg"></div>
     </>

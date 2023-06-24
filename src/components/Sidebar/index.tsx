@@ -36,7 +36,9 @@ export default function Sidebar({
   return (
     <>
       <NewPost isOpen={newPost} setOpen={setNewPost} />
-      <div className={`sidebar secondary-bg ${!sideBarFlex && "sidebar-flex"}`}>
+      <div
+        className={`sidebar secondary-bg ${!sideBarFlex && "sidebar-flex"} `}
+      >
         <div className="d-flex justify-content-end">
           <i
             className="bi bi-x-lg sidebar-flex-icon fontSecondary cursor text-2"
@@ -53,7 +55,6 @@ export default function Sidebar({
         <div className="sidebar-flex-icon">
           <Searchbar setSideBarFlex={setSideBarFlex} />
         </div>
-        <br />
         <br />
         <NavItemsBar
           isFlexed={currentFlex}
@@ -90,7 +91,7 @@ export default function Sidebar({
           title="PAINTERLY"
           borderClass="botttom-rounded"
         >
-          <div className="d-flex flex-column fontPrimary align-items-center gap-2 mt-4 text-2 pb-2">
+          <div className="d-flex flex-column fontPrimary align-items-center gap-2 text-2 pb-2">
             <NavButton
               setSideBarFlex={setSideBarFlex}
               path={undefined}
@@ -118,7 +119,8 @@ export default function Sidebar({
             />
           </div>
         </NavItemsBar>
-        <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-4 gap-3">
+        <br />
+        <div className="w-100 d-flex flex-column align-items-center justify-content-center gap-3">
           <OutlinedButton
             type="button"
             title="New Art"

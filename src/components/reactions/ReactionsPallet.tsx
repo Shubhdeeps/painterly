@@ -7,8 +7,9 @@ import heart from "./reactions/heart.png";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import IconButton from "@mui/material/IconButton";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import RecommendIcon from "@mui/icons-material/Recommend";
+
 const reactions = {
   sad,
   smile,
@@ -49,7 +50,19 @@ export default function ReactionsPallet({
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: {
+          xs: "row-reverse",
+          sm: "row",
+        },
+        alignItems: "center",
+      }}
+    >
+      <Typography px={1} color="secondary" variant="h6">
+        {totalCount}
+      </Typography>
       <AvatarGroup>
         {data.map((reaction) => {
           return (
@@ -66,9 +79,6 @@ export default function ReactionsPallet({
           );
         })}
       </AvatarGroup>
-      <Typography px={1} color="secondary" variant="h6">
-        {totalCount}
-      </Typography>
-    </>
+    </Box>
   );
 }

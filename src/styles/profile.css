@@ -64,9 +64,9 @@
   .profile-container-child {
     position: static;
   }
-  .profile-filter-container {
+  /* .profile-filter-container {
     flex-direction: column-reverse;
-  }
+  } */
 }
 
 @media only screen and (max-width: 800px) {
