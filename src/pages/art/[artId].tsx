@@ -25,7 +25,17 @@ import {
 import NameAndReactionsWeb from "@/components/singleArt/NameAndReactions";
 import NameAndReactionsMobile from "@/components/singleArt/NameAndReactionMobile";
 import { Typography } from "@mui/material";
+import SelectMenu from "@/components/inputFields/SelectMenu";
+import { auth } from "@/services/firebaseConfig";
+import ArtDeleteConfirmation from "@/components/modals/DeleteConfirmation";
 
+const options = {
+  self: [
+    { value: "Request review", action: () => alert("Requested!") },
+    { value: "Delete", action: () => alert("art deleted") },
+  ],
+  other: [{ value: "Report art", action: () => alert("Reported!") }],
+};
 export default function Page({
   data,
   comments,
@@ -37,6 +47,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const [seeAll, setSeeAll] = useState(false);
+  const [open, setOpen] = useState("");
   const [isFavByCurrUser, setIsFavByCurrUser] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const commentRef = useRef<HTMLDivElement | null>(null);
@@ -56,14 +67,21 @@ export default function Page({
   const authorProfile = JSON.parse(author) as Profile;
   const postComments = JSON.parse(comments) as CommentsProps[];
   const sliceNum = seeAll ? postComments.length : 5;
+  const currUserId = auth.currentUser?.uid;
 
+  const artAuthorIs = currUserId === art.authorId ? "self" : "other";
   const handleChangeFavorite = (state: boolean) => {
     setIsFavByCurrUser(state);
     // update in db
     updateUserFavorite(state ? "ADD" : "REMOVE", art.artId);
   };
+
+  //update the options for delete dialog confirmation
+  options.self[1].action = () => setOpen(art.artId);
+
   return (
     <>
+      <ArtDeleteConfirmation open={!!open} setOpen={setOpen} />
       <Box display="flex" gap={2} id="art-section">
         <Box
           sx={{
@@ -71,9 +89,11 @@ export default function Page({
             flexDirection: "column",
             p: 2,
             gap: 1,
+            position: "relative",
           }}
           className="ws-100 secondary-bg border-radius-14"
         >
+          <SelectMenu list={options[artAuthorIs]} />
           <Image
             alt="image"
             ref={imageRef}
@@ -140,7 +160,11 @@ export default function Page({
             {postComments.slice(0, sliceNum).map((comment) => {
               return (
                 <React.Fragment key={comment.commentId}>
-                  <Comment comment={comment} highlighted={false} />
+                  <Comment
+                    currUserId={currUserId}
+                    comment={comment}
+                    highlighted={false}
+                  />
                 </React.Fragment>
               );
             })}

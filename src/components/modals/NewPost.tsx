@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-bootstrap";
 import InputTextArea from "../inputFields/InputTextArea";
 import InputTextField from "../inputFields/InputTextField";
-import Loader from "../loader/Loader";
+
 import OutlinedButton from "../Sidebar/OutlinedButton";
 import ChooseNewArtCategory from "./ChooseNewArtCategory";
 import ModalWrapper from "./ModalWrapper";
