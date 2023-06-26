@@ -37,6 +37,7 @@ export default function NameAndReactionsMobile(data: Props) {
           flexDirection: "column",
           alignItems: "start",
           mt: 2,
+          ml: -1,
         }}
       >
         <Reactions
