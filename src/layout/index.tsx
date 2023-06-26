@@ -7,6 +7,7 @@ import Loader from "../components/loader/Loader";
 import Authenticate from "../components/authenticate/Authenticate";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/utils/theme";
+import AddNewSpeedDialer from "@/components/speedDialers/AddNewSpeedDialer";
 
 export default function Layout({ children }: { children: any }) {
   const [sideBarFlex, setSideBarFlex] = useState(false);
@@ -49,6 +50,7 @@ export default function Layout({ children }: { children: any }) {
               <Container className="fontPrimary mb-4">{children}</Container>
             </div>
           </div>
+          <AddNewSpeedDialer />
           <Sidebar setSideBarFlex={setSideBarFlex} sideBarFlex={sideBarFlex} />
         </>
       ) : (
