@@ -37,12 +37,13 @@ export default function SingleArtLoader({
   console.log(cordinates);
   if (!cordinates) return null;
 
+  const classNameForWidth = window.innerWidth < 1000 ? "w-100" : "ws-100";
   return (
     <>
       <section className="d-flex profile-filter-container gap-2 z-2 popup-width container">
         <div
           style={{ marginTop: window.pageYOffset }}
-          className="d-flex flex-column p-2 gap-2 ws-100 secondary-bg border-radius-14 height-flex"
+          className={`d-flex flex-column p-2 gap-2 secondary-bg border-radius-14 height-flex ${classNameForWidth}`}
         >
           <style jsx global>{`
           .bg-color{

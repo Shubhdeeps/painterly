@@ -78,6 +78,7 @@ export default function Page({
     ],
     other: [{ value: "Report art", action: () => alert("Reported!") }],
   };
+  const classNameForWidth = window.innerWidth < 1000 ? "w-100" : "ws-100";
 
   return (
     <>
@@ -91,7 +92,7 @@ export default function Page({
             gap: 1,
             position: "relative",
           }}
-          className="ws-100 secondary-bg border-radius-14"
+          className={`secondary-bg border-radius-14 ${classNameForWidth}`}
         >
           <SelectMenu list={options[artAuthorIs]} />
           <Image

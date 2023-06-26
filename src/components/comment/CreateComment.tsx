@@ -92,6 +92,10 @@ export default function CreateComment({
         <IconButton
           type="submit"
           sx={{
+            display: {
+              xs: "none",
+              sm: "flex",
+            },
             border: "none !important",
             outline: "none !important",
             width: "62px",
@@ -102,7 +106,7 @@ export default function CreateComment({
           {isLoding ? (
             <CircularProgress color="secondary" size="36px" />
           ) : (
-            <SendIcon color="secondary" fontSize="large" />
+            <SendIcon color="secondary" fontSize="medium" />
           )}
         </IconButton>
       </FormControl>
