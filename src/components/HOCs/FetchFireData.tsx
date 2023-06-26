@@ -1,13 +1,31 @@
 import { Post } from "@/models/Post";
-import { Timestamp } from "@/services/firebaseConfig";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Card from "../card";
 import Loader from "../loader/Loader";
 import Masonry from "react-masonry-css";
+import RequestCard from "../card/RequestCard";
+import { ArtRequests } from "@/models/Requests";
 
-export default function FetchFireData({
+// true: if last post should be date, false if last post should be a number (for infinite scroll functionality)
+const entityTypeAndLastPostOutputFormat = {
+  GALLERY: true,
+  COMMUNITY: false,
+  FAVORITE: false,
+  PROFILE: false,
+  REQUESTS: true,
+};
+
+const entityAndCardComponent = {
+  GALLERY: Card,
+  COMMUNITY: Card,
+  FAVORITE: Card,
+  PROFILE: Card,
+  REQUESTS: RequestCard,
+};
+
+export default function FetchFireData<T extends Post | ArtRequests>({
   getPosts,
   setArt,
   setImageCordinates,
@@ -17,11 +35,11 @@ export default function FetchFireData({
   getPosts: (
     lastPostDate: any,
     filter: string | undefined
-  ) => Promise<Post[] | null | undefined>;
+  ) => Promise<null | undefined | T[]>;
   setArt: Function;
   setImageCordinates: Function;
   breakpointColumnsObj: any;
-  entity: "GALLERY" | "COMMUNITY" | "FAVORITE" | "PROFILE";
+  entity: "GALLERY" | "COMMUNITY" | "FAVORITE" | "PROFILE" | "REQUESTS";
 }) {
   //   return function Fetch() {
   const router = useRouter();
@@ -29,10 +47,10 @@ export default function FetchFireData({
 
   const [hasMore, setHasMore] = useState(true);
   //   const [art, setArt] = useState<any>();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [renderPosts, setRenderPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<T[]>([]);
+  const [renderPosts, setRenderPosts] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [freshPosts, setFreshPosts] = useState<Post[]>([]);
+  const [freshPosts, setFreshPosts] = useState<T[]>([]);
 
   //for infinite scroll
   const { ref, inView } = useInView({
@@ -45,7 +63,7 @@ export default function FetchFireData({
     // for clearing when filter change
     setPosts([]);
     setHasMore(true);
-    const lastPost = entity === "GALLERY" ? undefined : 0;
+    const lastPost = entityTypeAndLastPostOutputFormat[entity] ? undefined : 0;
     getPosts(lastPost, filterName).then((res) => {
       if (res) {
         setFreshPosts(res);
@@ -74,8 +92,10 @@ export default function FetchFireData({
       return;
     }
     if (inView && !!posts.length) {
-      const lastPost = posts[posts.length - 1].created;
-      const lastItem = entity === "GALLERY" ? lastPost : posts.length;
+      const lastPostDate = posts[posts.length - 1].created;
+      const lastItem = entityTypeAndLastPostOutputFormat[entity]
+        ? lastPostDate
+        : posts.length;
 
       getPosts(lastItem, filterName).then((res) => {
         if (res === null) {
@@ -106,6 +126,7 @@ export default function FetchFireData({
   if (isLoading) {
     return <Loader text="" />;
   }
+  const CardComponent = entityAndCardComponent[entity];
   return (
     <>
       {/* <WrappedComponent /> */}
@@ -115,10 +136,11 @@ export default function FetchFireData({
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
-        {posts.map((post: Post) => {
+        {posts.map((post) => {
           return (
             <React.Fragment key={post.artId}>
-              <Card data={post} handleOpenPost={handleOpenImage} />
+              {/* @ts-ignore */}
+              <CardComponent data={post} handleOpenPost={handleOpenImage} />
             </React.Fragment>
           );
         })}

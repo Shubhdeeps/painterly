@@ -17,7 +17,7 @@ const requestAction: { [key in Request]: Request } = {
 };
 
 const requestButtonName: { [key in Request]: string } = {
-  REQUEST: "REQUEST TO CONNECT",
+  REQUEST: "CONNECT",
   DISCONNECT: "DISCONNECT",
   "CANCEL-REQUEST": "CANCEL REQUEST",
   ACCEPT: "ACCEPT REQUEST",
@@ -85,30 +85,35 @@ export default function Connection({
     connectWithNewUser(profileAuthorUid, actionFollow);
   };
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" mt={1}>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Button
         onClick={() => handleRequest(currUserRelationWithAuthor!)}
         sx={{
-          borderRadius: "20px",
-          px: 4,
-          my: 1,
+          borderRadius: "25px",
+          px: 2,
+          width: "160px",
+          fontSize: "13px",
+          mb: 1,
           outline: "none !important",
         }}
         color="secondary"
-        variant="text"
+        variant="outlined"
       >
         {requestButtonName[currUserRelationWithAuthor!]}
       </Button>
       <Button
         onClick={() => handleFollow(currentUserFollowStatusWithAuthor)}
         sx={{
-          borderRadius: "20px",
-          px: 4,
-          my: 1,
+          borderRadius: "25px",
+
+          px: 2,
+          width: "160px",
+          fontSize: "13px",
+
           outline: "none !important",
         }}
         color="secondary"
-        variant="text"
+        variant="outlined"
       >
         {followButtonName[currentUserFollowStatusWithAuthor]}
       </Button>

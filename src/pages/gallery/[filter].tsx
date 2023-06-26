@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HashTitles from "@/components/headings/HashTitles";
 import Header from "@/components/headings/Header";
 import FetchFireData from "@/components/HOCs/FetchFireData";
-import { getAllPosts } from "@/services/firestore/posts";
+import { getAllPosts } from "@/services/firestore/post/posts";
 import SingleArtLoader from "@/components/loader/SingleArtLoader";
 
 const hashTitles = ["All", "Abstract", "Pencil", "Colorful", "Anime"];

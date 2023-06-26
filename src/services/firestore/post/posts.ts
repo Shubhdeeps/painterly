@@ -6,9 +6,9 @@ import {
   serverTimestamp,
 } from "@/services/firebaseConfig";
 import { Post } from "@/models/Post";
-import { collectionRef } from "./collectionOperations";
+import { collectionRef } from "../collectionOperations";
 import { v4 as uuidv4 } from "uuid";
-import { updateCurrUserPoolOnNewPost } from "../realtimeDB/userPostsPool/createUserPool";
+import { updateCurrUserPoolOnNewPost } from "../../realtimeDB/userPostsPool/createUserPool";
 
 const AMOUNT_TO_BE_FETCHED = 10;
 // let firstLoad = true;

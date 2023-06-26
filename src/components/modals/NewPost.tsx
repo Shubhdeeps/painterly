@@ -1,4 +1,4 @@
-import { postNewArt } from "@/services/firestore/posts";
+import { postNewArt } from "@/services/firestore/post/posts";
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-bootstrap";
 import InputTextArea from "../inputFields/InputTextArea";

@@ -6,10 +6,11 @@ import { Profile } from "@/models/Profile";
 import { getProfileByUID } from "@/services/firestore/profiles";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { getPostsBasedOnUid } from "@/services/firestore/posts";
+import { getPostsBasedOnUid } from "@/services/firestore/post/posts";
 import SingleArtLoader from "@/components/loader/SingleArtLoader";
 import ProfileHashTitles from "@/components/userProfile/components/ProfileHashTitles";
 import Community from "@/components/userProfile/components/Community";
+import { Box } from "@mui/material";
 export default function Index({ author }: { author: string }) {
   const router = useRouter();
   const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
@@ -32,28 +33,7 @@ export default function Index({ author }: { author: string }) {
     return getPostsBasedOnUid(lastPostDate, authorProfile.uid);
   };
   return (
-    <section className="d-flex profile-filter-container gap-2">
-      <div className="d-flex flex-column ws-100">
-        <ProfileHashTitles
-          hashTitles={["Posts", "Connections"]}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-        {currentPage === "posts" ? (
-          <FetchFireData
-            entity="GALLERY"
-            breakpointColumnsObj={{
-              default: 2,
-              770: 1,
-            }}
-            setArt={setArt}
-            setImageCordinates={setImageCordinates}
-            getPosts={getPostsBasedOnUidFiltered}
-          />
-        ) : (
-          <Community />
-        )}
-      </div>
+    <>
       <ProfileInfo
         uid={authorProfile.uid}
         currentUserProfile={true}
@@ -61,7 +41,30 @@ export default function Index({ author }: { author: string }) {
         name={authorProfile.displayName}
         imageURL={authorProfile.profileURL}
       />
-    </section>
+      <br />
+      {/* <Box mt={3}></Box> */}
+      <ProfileHashTitles
+        hashTitles={["Posts", "Connections"]}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      {currentPage === "posts" ? (
+        <FetchFireData
+          entity="GALLERY"
+          breakpointColumnsObj={{
+            default: 4,
+            1600: 3,
+            1200: 2,
+            770: 1,
+          }}
+          setArt={setArt}
+          setImageCordinates={setImageCordinates}
+          getPosts={getPostsBasedOnUidFiltered}
+        />
+      ) : (
+        <Community />
+      )}
+    </>
   );
 }
 

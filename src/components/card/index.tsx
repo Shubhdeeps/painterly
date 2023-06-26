@@ -23,7 +23,7 @@ function Card({ data, handleOpenPost }: Props) {
     }
   }, [inView, isviewed]);
 
-  const line = data.description;
+  const line = data.description || "";
   const art = {
     artURL: data.artURL,
     title: data.title,
