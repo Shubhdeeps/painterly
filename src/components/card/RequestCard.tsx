@@ -38,7 +38,7 @@ function RequestCard({ data, handleOpenPost }: Props) {
           isviewed ? "entry-onview" : "exit-onview"
         }`}
       >
-        <Link href={`/art/${data.artId}`} passHref>
+        <Link href={`/requested/${data.requestId}`} passHref>
           <Image
             onClick={(e) =>
               handleOpenPost(e.currentTarget.getBoundingClientRect(), art)

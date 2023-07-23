@@ -9,6 +9,7 @@ import { Post } from "@/models/Post";
 import { collectionRef } from "../collectionOperations";
 import { v4 as uuidv4 } from "uuid";
 import { updateCurrUserPoolOnNewPost } from "../../realtimeDB/userPostsPool/createUserPool";
+import { uploadImagesAndGetURL } from "@/services/storage/imageStorage";
 
 const AMOUNT_TO_BE_FETCHED = 10;
 // let firstLoad = true;
@@ -81,15 +82,7 @@ export const postNewArt = async (
     const currentUser = auth.currentUser?.uid;
     const newId = uuidv4();
 
-    const extension = image.name.split(".").pop();
-    let imageURL = "";
-    await storage
-      .ref()
-      .child(`drawings/${newId}.${extension}`)
-      .put(image)
-      .then(async (res) => {
-        imageURL = await res.ref.getDownloadURL();
-      });
+    const imageURL = await uploadImagesAndGetURL(image);
 
     const NewPost: Post = {
       artId: newId,
@@ -138,7 +131,6 @@ export const getPostsBasedOnUid = async (
     }
     return posts.docs.map((post) => {
       const source = post.metadata.fromCache;
-      console.log("source: ", source);
       return post.data();
     });
   } catch (e) {

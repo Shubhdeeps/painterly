@@ -12,14 +12,23 @@ import ReactDOM from "react-dom";
 import { CommentsProps } from "@/models/Comment";
 import { createComment } from "@/services/firestore/post/comments";
 
+/**
+ *
+ * @postId post id of parent post
+ * @commentsParentRef ref of comment post point
+ * @postAuthorId author of the post
+ * @returns
+ */
 export default function CreateComment({
   postId,
   commentsParentRef,
   postAuthorId,
+  callbackForTimeline,
 }: {
   postId: string;
-  commentsParentRef: React.MutableRefObject<HTMLDivElement | null>;
+  commentsParentRef?: React.MutableRefObject<HTMLDivElement | null>;
   postAuthorId: string;
+  callbackForTimeline?: (commentText: string) => void;
 }) {
   const [commentText, setCommentText] = useState("");
   const [isLoding, setLoading] = useState(false);
@@ -28,15 +37,18 @@ export default function CreateComment({
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await createComment(postId, commentText, postAuthorId);
-    console.log(res);
-    setComments(res);
+    if (callbackForTimeline) {
+      callbackForTimeline(commentText);
+    } else {
+      const res = await createComment(postId, commentText, postAuthorId);
+      setComments(res);
+    }
     setLoading(false);
     setCommentText("");
   };
 
   useEffect(() => {
-    if (commentsParentRef.current && commented) {
+    if (commentsParentRef && commentsParentRef.current && commented) {
       const allChildren = Array.prototype.slice.call(
         commentsParentRef.current.children
       );

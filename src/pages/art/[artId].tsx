@@ -28,7 +28,6 @@ import { Typography } from "@mui/material";
 import SelectMenu from "@/components/inputFields/SelectMenu";
 import { auth } from "@/services/firebaseConfig";
 import ArtDeleteConfirmation from "@/components/modals/DeleteConfirmation";
-import { createNewRequestPost } from "@/services/firestore/post/requests/createNewRequestPost";
 
 export default function Page({
   data,
@@ -73,7 +72,7 @@ export default function Page({
   //update the options for delete dialog confirmation
   const options = {
     self: [
-      { value: "Request review", action: () => createNewRequestPost(art) },
+      { value: "Request review", action: () => console.log(art) },
       { value: "Delete", action: () => setOpen(art.artId) },
     ],
     other: [{ value: "Report art", action: () => alert("Reported!") }],

@@ -1,0 +1,15 @@
+export const mui_consts = {
+  primary: "#715539",
+  secondary: "#222222",
+  secondaryTransparent: "rgba(217, 217, 217, 0.1)",
+  fontPrimary: "#ececec",
+  fontSecondary: "#7a7a7a",
+  mentor: "#f57070",
+  student: "#70f4df",
+  highlightPrimary: "#ff86a7",
+  highlightSecondary: "#70d0ff",
+  button: "#ed9122",
+  text6: "9px",
+  text5: "11px",
+  text4: "20px",
+};

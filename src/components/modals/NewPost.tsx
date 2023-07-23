@@ -11,9 +11,11 @@ import ModalWrapper from "./ModalWrapper";
 export default function NewPost({
   isOpen,
   setOpen,
+  callbackForTimeline,
 }: {
   isOpen: boolean;
   setOpen: Function;
+  callbackForTimeline?: (image: File) => void;
 }) {
   const [isUploaded, setIsUploaded] = useState<File | null>(null);
   const [alert, setAlert] = useState("");
@@ -57,7 +59,7 @@ export default function NewPost({
       return;
     }
 
-    if (!categoryRef.current.length) {
+    if (!categoryRef.current.length && !callbackForTimeline) {
       setAlert("Select a category");
       setIsLoading(false);
       return;
@@ -70,14 +72,18 @@ export default function NewPost({
       return;
     }
 
-    setAlert("");
-    const res = await postNewArt(
-      titleRef.current,
-      isUploaded,
-      descriptionRef.current,
-      categoryRef.current
-    );
-    console.log(res);
+    if (!callbackForTimeline) {
+      setAlert("");
+      const res = await postNewArt(
+        titleRef.current,
+        isUploaded,
+        descriptionRef.current,
+        categoryRef.current
+      );
+      console.log(res);
+    } else {
+      callbackForTimeline(isUploaded);
+    }
     setIsLoading(false);
     handleCloseModal();
   };
@@ -140,10 +146,12 @@ export default function NewPost({
             </div>
           )}
         </div>
-        <ChooseNewArtCategory
-          categories={categories}
-          categoryRef={categoryRef}
-        />
+        {!callbackForTimeline && (
+          <ChooseNewArtCategory
+            categories={categories}
+            categoryRef={categoryRef}
+          />
+        )}
         <div className="d-flex justify-content-end gap-2">
           <OutlinedButton
             title="Cancel"

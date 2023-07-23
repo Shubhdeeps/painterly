@@ -1,13 +1,14 @@
-import { postNewArt } from "@/services/firestore/post/posts";
+import { getPostsBasedOnUid } from "@/services/firestore/post/posts";
 import React, { useEffect, useRef, useState } from "react";
-import { Image } from "react-bootstrap";
 import InputTextArea from "../inputFields/InputTextArea";
-import InputTextField from "../inputFields/InputTextField";
-
+import Avatar from "@mui/material/Avatar";
 import OutlinedButton from "../Sidebar/OutlinedButton";
-import ChooseNewArtCategory from "./ChooseNewArtCategory";
 import ModalWrapper from "./ModalWrapper";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { auth } from "@/services/firebaseConfig";
+import { Post } from "@/models/Post";
+import { mui_consts } from "@/styles/mui";
+import { createFirstTimeline } from "@/services/firestore/requests/timeline";
 
 export default function NewRequest({
   isOpen,
@@ -16,61 +17,47 @@ export default function NewRequest({
   isOpen: boolean;
   setOpen: Function;
 }) {
-  //   const [isUploaded, setIsUploaded] = useState<File | null>(null);
   const [alert, setAlert] = useState("");
-  //   const categoryRef = useRef([]);
-  const titleRef = useRef("");
   const descriptionRef = useRef("");
   const [isLoading, setIsLoading] = useState(false);
-
-  //   useEffect(() => {
-  //     document.addEventListener("paste", (e) => {
-  //       if (e.clipboardData) setIsUploaded(e.clipboardData?.files[0]);
-  //     });
-
-  //     return () => {
-  //       document.removeEventListener("paste", () => {
-  //         return;
-  //       });
-  //     };
-  //   }, []);
+  const [currUserPosts, setCurrUserPosts] = useState<Post[]>([]);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  useEffect(() => {
+    (async function getCurrUserPosts() {
+      const currUserId = auth.currentUser?.uid!;
+      const currUserPosts = await getPostsBasedOnUid(undefined, currUserId);
+      if (currUserPosts) {
+        setCurrUserPosts(currUserPosts);
+      }
+    })();
+  }, []);
 
   if (!isOpen) {
     return null;
   }
 
-  //   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     if (e.target.files) {
-  //       setIsUploaded(e.target.files[0]);
-  //     }
-  //   };
-
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    // if (!isUploaded) {
-    //   setAlert("Image required!");
-    //   setIsLoading(false);
-    //   return;
-    // }
+    if (!selectedPost) {
+      setAlert("Please select a post first!");
+      setIsLoading(false);
 
-    // if (!isUploaded.name.match(/\.(jpg|jpeg|png)$/)) {
-    //   console.log(isUploaded.name);
-    //   setAlert("Select valid image format! (jpg, jpeg, png)");
-    //   setIsLoading(false);
-    //   return;
-    // }
+      return;
+    }
+    if (!descriptionRef.current) {
+      setIsLoading(false);
+      setAlert("Description required!");
+      return;
+    }
 
+    createFirstTimeline(
+      selectedPost.artURL,
+      selectedPost.artId,
+      descriptionRef.current
+    );
+    setIsLoading(false);
     setAlert("");
-    // const res = await postNewArt(
-    //   titleRef.current,
-    //   isUploaded,
-    //   descriptionRef.current,
-    //   categoryRef.current
-    // );
-    // console.log(res);
-    // setIsLoading(false);
-    // handleCloseModal();
   };
 
   const handleCloseModal = () => {
@@ -95,11 +82,40 @@ export default function NewRequest({
         />
         <Box className="secondaryTransparent-b border-radius-14">
           <Typography variant="h6">Select an art</Typography>
-          <InputTextField
+          {/* <InputTextField
             icon=""
             placeholder="Search by title"
             textRef={titleRef}
-          />
+          /> */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              overflow: "auto",
+            }}
+          >
+            {currUserPosts.map((post) => {
+              return (
+                <React.Fragment key={post.artId}>
+                  <Avatar
+                    onClick={() => setSelectedPost(post)}
+                    alt={post.title}
+                    src={post.artURL}
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      cursor: "pointer",
+                      border:
+                        selectedPost?.artId === post.artId
+                          ? `2px solid ${mui_consts.highlightPrimary}`
+                          : "none",
+                    }}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </Box>
         </Box>
 
         {/* For future if we need to add upload art feature */}

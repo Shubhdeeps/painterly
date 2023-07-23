@@ -65,6 +65,12 @@ p {
 .exit-onview {
   opacity: 0;
 }
+
+/* Request cards */
+.request_image {
+  border-radius: 12px;
+}
+
 /* Card animation on view */
 @keyframes fade-up {
   0% {

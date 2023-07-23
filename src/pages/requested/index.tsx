@@ -1,26 +1,24 @@
 import React, { useState } from "react";
 import Header from "@/components/headings/Header";
 import FetchFireData from "@/components/HOCs/FetchFireData";
-import SingleArtLoader from "@/components/loader/SingleArtLoader";
-import { Post } from "@/models/Post";
 import { getCurrUserProfile } from "@/services/firestore/profile";
-import { getRequestedPosts } from "@/services/firestore/post/requests/getRequestPosts";
 import { Timestamp } from "@/services/firebaseConfig";
+import { getCurrUserRequests } from "@/services/firestore/requests/timeline";
 
 export default function Page() {
-  const [imageCordinates, setImageCordinates] = useState<Object | null>(null);
-  const [art, setArt] = useState<any>();
+  const [_imageCordinates, setImageCordinates] = useState<Object | null>(null);
+  const [_art, setArt] = useState<any>();
 
-  if (!!imageCordinates) {
-    return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
-  }
+  // if (!!imageCordinates) {
+  //   return <SingleArtLoader art={art} cordinates={imageCordinates as any} />;
+  // }
 
   async function getPosts(
     lastPostDate: Timestamp | undefined,
     _filter: string | undefined
   ) {
     const user = await getCurrUserProfile();
-    const currUserRequestedPosts = await getRequestedPosts(
+    const currUserRequestedPosts = await getCurrUserRequests(
       lastPostDate,
       user.uid
     );

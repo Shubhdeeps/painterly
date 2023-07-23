@@ -46,7 +46,6 @@ export default function FetchFireData<T extends Post | ArtRequests>({
   const filterName = router.asPath.split("/")[2]; // filter name
 
   const [hasMore, setHasMore] = useState(true);
-  //   const [art, setArt] = useState<any>();
   const [posts, setPosts] = useState<T[]>([]);
   const [renderPosts, setRenderPosts] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);

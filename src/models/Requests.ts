@@ -5,9 +5,7 @@ export interface ArtRequests {
   artId: string;
   created: Timestamp;
   artURL: string;
-  resolved: boolean;
-  response: string | null;
-  assigneeId: string;
-  displayName: string;
+  resolved: boolean; // is resolved
+  assigneeId?: string;
   requestId: string;
 }
