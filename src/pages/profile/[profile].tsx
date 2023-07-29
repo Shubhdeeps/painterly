@@ -39,6 +39,7 @@ export default function Index({ author }: { author: string }) {
         description={authorProfile.description}
         name={authorProfile.displayName}
         imageURL={authorProfile.profileURL}
+        isMentor={authorProfile.profileType === "Advisor"}
       />
       <br />
       {/* <Box mt={3}></Box> */}

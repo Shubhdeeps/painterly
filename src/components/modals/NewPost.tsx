@@ -7,6 +7,7 @@ import InputTextField from "../inputFields/InputTextField";
 import OutlinedButton from "../Sidebar/OutlinedButton";
 import ChooseNewArtCategory from "./ChooseNewArtCategory";
 import ModalWrapper from "./ModalWrapper";
+import InputFileUploader from "@/components/inputFields/InputFileUploader";
 
 export default function NewPost({
   isOpen,
@@ -80,7 +81,6 @@ export default function NewPost({
         descriptionRef.current,
         categoryRef.current
       );
-      console.log(res);
     } else {
       callbackForTimeline(isUploaded);
     }
@@ -117,35 +117,11 @@ export default function NewPost({
             />
           )}
         </div>
-        <div className="d-flex gap-3 flex-wrap justify-content-start">
-          <span className="secondaryTransparent-bg border-radius-14">
-            <input
-              type="file"
-              id="file-upload"
-              name="file-upload"
-              className="new-file"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={(e) => handleImageUpload(e)}
-            />
-            <label
-              htmlFor="file-upload"
-              className="input-file-label cursor  ps-5 pe-5"
-            >
-              <span>Choose an art</span>
-            </label>
-          </span>
-          {isUploaded && (
-            <div className="d-flex align-items-center gap-3">
-              <span>{isUploaded.name}</span>
-              <span className="secondaryTransparent-bg p-2 border-radius-50">
-                <i
-                  onClick={() => setIsUploaded(null)}
-                  className="bi bi-x-circle cursor"
-                ></i>
-              </span>
-            </div>
-          )}
-        </div>
+        <InputFileUploader
+          handleImageUpload={handleImageUpload}
+          isUploaded={isUploaded}
+          setIsUploaded={setIsUploaded}
+        />
         {!callbackForTimeline && (
           <ChooseNewArtCategory
             categories={categories}

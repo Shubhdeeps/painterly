@@ -40,7 +40,6 @@ export default function Layout({ children }: { children: any }) {
           <div
             className="main-container"
             onClick={(e) => {
-              e.preventDefault();
               sideBarFlex && setSideBarFlex(false);
             }}
           >

@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Comment, CommentsProps } from "@/models/Comment";
 import firebase from "firebase";
-import { auth } from "@/services/firebaseConfig";
 import { collectionRef } from "../../collectionOperations";
 import { sendNewNotification } from "../../../realtimeDB/notifications/sendNotification";
 import { getCurrUserProfile } from "../../profile";
@@ -9,7 +8,8 @@ import { getCurrUserProfile } from "../../profile";
 export const createComment = async (
   postId: string,
   commentText: string,
-  postAuthor: string
+  notificationRecieverUid: string,
+  commentLocation: "post" | "art-request" = "post"
 ) => {
   try {
     const author = await getCurrUserProfile();
@@ -29,12 +29,20 @@ export const createComment = async (
       .doc(commentId)
       .set(newComment);
 
-    sendNewNotification(postAuthor, "commented on your art.", `/art/${postId}`);
+    let content = "commented on your art.";
+    let redirectLink = `/art/${postId}`;
+
+    if (commentLocation === "art-request") {
+      content = "posted comment on the timeline.";
+      redirectLink = `/requested/${postId}`;
+    }
+    sendNewNotification(notificationRecieverUid, content, redirectLink);
     const commentsProps: CommentsProps = {
       author: {
         name: author?.displayName!,
         profileURL: author?.profileURL,
         uid: author?.uid,
+        isMentor: author.profileType === "Advisor",
       },
       commentId,
       commentText,

@@ -20,7 +20,8 @@ export default function Page() {
     const user = await getCurrUserProfile();
     const currUserRequestedPosts = await getCurrUserRequests(
       lastPostDate,
-      user.uid
+      user.uid,
+      user.profileType === "Advisor"
     );
     return currUserRequestedPosts;
   }

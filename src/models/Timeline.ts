@@ -4,6 +4,7 @@ import { Timestamp } from "@/services/firebaseConfig";
 import { CommentsProps } from "./Comment";
 
 export type Timeline = {
+  requestedTo: string[]; //uid of mentors the request has sent to
   requestId: string;
   description: string;
   requestAuthor: string;

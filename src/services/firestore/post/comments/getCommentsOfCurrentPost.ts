@@ -34,6 +34,8 @@ export const getCommentsOfCurrentPost = async (postId: string) => {
         usersCached[profile.uid] = {
           displayName: profile.displayName,
           profileURL: profile.profileURL,
+          uid: profile.uid,
+          isMentor: profile.profileType === "Advisor",
         };
       }
     });
@@ -44,6 +46,7 @@ export const getCommentsOfCurrentPost = async (postId: string) => {
           name: usersCached[comment.authorId].displayName,
           profileURL: usersCached[comment.authorId].profileURL,
           uid: comment.authorId,
+          isMentor: usersCached[comment.authorId].isMentor,
         },
         commentText: comment.commentText,
         date: comment.created,

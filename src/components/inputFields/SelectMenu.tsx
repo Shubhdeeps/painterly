@@ -25,7 +25,7 @@ export default function SelectMenu({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const marginTop = size === "sm" ? -1.5 : 0;
+  const marginTop = size === "sm" ? -1 : 0;
 
   return (
     <Box

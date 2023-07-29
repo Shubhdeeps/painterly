@@ -5,9 +5,5 @@ import React from "react";
 export default function Page() {
   const router = useRouter();
   const requestId = router.query.requestId as string | undefined;
-  return (
-    <>
-      <RequestedTimeline requestId={requestId} />
-    </>
-  );
+  return <RequestedTimeline requestId={requestId} overview />;
 }

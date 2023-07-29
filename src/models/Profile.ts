@@ -6,4 +6,5 @@ export interface Profile {
   followersCount: number;
   profileType: "Advisor" | "Trainee" | "Admin";
   searchName: string;
+  isAvailable?: boolean;
 }

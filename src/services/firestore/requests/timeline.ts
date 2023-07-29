@@ -1,6 +1,7 @@
 import { ArtRequests } from "@/models/Requests";
 import { RequestedArt, Timeline, TimelineComment } from "@/models/Timeline";
 import {
+  FieldValue,
   Timestamp,
   auth,
   firestore,
@@ -10,6 +11,8 @@ import { v4 } from "uuid";
 import { createComment, getCommentsOfCurrentPost } from "../post/comments";
 import { getCurrUserProfile } from "../profile";
 import { uploadImagesAndGetURL } from "@/services/storage/imageStorage";
+import { collectionRef } from "../collectionOperations";
+import { sendNewNotification } from "@/services/realtimeDB/notifications";
 
 const ref = firestore.collection("request_timeline");
 export function createFirstTimeline(
@@ -21,6 +24,7 @@ export function createFirstTimeline(
   const requestId = v4();
 
   const newRequest: Timeline = {
+    requestedTo: [],
     description,
     requestAuthor: currUser?.uid,
     requestId,
@@ -47,11 +51,19 @@ export async function createTimelineComment(
   commentText: string
 ) {
   const currentUser = await getCurrUserProfile();
+
+  let notificationReceiver = timeline.requestAuthor;
+
+  //if there's a timeline assignee and the current commentor is the author of timeline
+  if (timeline.assigneeId && currentUser.uid === timeline.requestAuthor) {
+    notificationReceiver = timeline.assigneeId;
+  }
   // create new comment
   const newComment = await createComment(
     timeline.requestId,
     commentText,
-    timeline.requestAuthor
+    notificationReceiver,
+    "art-request"
   );
 
   const itemNumber = Object.keys(timeline.timeline).length + 1;
@@ -67,6 +79,15 @@ export async function createTimelineComment(
 
   ref.doc(timeline.requestId).update({
     [`timeline.${itemNumber}`]: timelineContent,
+  });
+}
+
+export async function deleteTimelineItem(
+  timelineId: string,
+  itemNumber: number
+) {
+  ref.doc(timelineId).update({
+    [`timeline.${itemNumber}`]: null,
   });
 }
 
@@ -92,12 +113,17 @@ export async function createTimelineImage(timeline: Timeline, image: File) {
 
 export async function getCurrUserRequests(
   lastPostDate: Timestamp | undefined,
-  userId: string
+  userId: string,
+  isMentor: boolean
 ) {
-  const requestedPost = await ref
-    .where("requestAuthor", "==", userId)
-    .limit(10)
-    .get();
+  let query = ref.where("requestAuthor", "==", userId).limit(10);
+
+  // if mentor then fetch art where the mentor is assigned
+  if (isMentor) {
+    query = ref.where("assigneeId", "==", userId).limit(10);
+  }
+
+  const requestedPost = await query.limit(10).get();
 
   const userRequests: ArtRequests[] = [];
 
@@ -120,15 +146,29 @@ export async function getCurrUserRequests(
 export async function getTimelineRequestBasedOnRequestId(requestId: string) {
   const requestQuery = ref.doc(requestId).get();
   const commentsQuery = getCommentsOfCurrentPost(requestId);
+  const currUserId = auth.currentUser?.uid;
+
+  if (!currUserId) {
+    throw new Error("Denied access!");
+  }
   const [requestResolvedQuery, requestComments] = await Promise.all([
     requestQuery,
     commentsQuery,
   ]);
   const timelineData = requestResolvedQuery.data() as Timeline;
 
-  const outputTimeline: (TimelineComment | RequestedArt)[] = [];
+  if (
+    timelineData.requestAuthor !== currUserId &&
+    timelineData.assigneeId !== currUserId &&
+    !timelineData.requestedTo.includes(currUserId)
+  ) {
+    throw new Error("Denied access!");
+  }
+  const outputTimeline: (TimelineComment | RequestedArt | null)[] = [];
   for (const timelineComps of Object.values(timelineData.timeline)) {
-    if (timelineComps.type === "comment" && requestComments) {
+    if (!timelineComps) {
+      outputTimeline.push(timelineComps);
+    } else if (timelineComps.type === "comment" && requestComments) {
       // if type is comment then find the comment from comments based on comment id;
       const currentComment = requestComments.find(
         (comment) => comment.commentId === timelineComps.contentId
@@ -154,4 +194,47 @@ export async function getTimelineRequestBasedOnRequestId(requestId: string) {
   }
 
   return { outputTimeline, timelineData };
+}
+
+// When mentor accepts the request
+export async function requestAcceptedOrRejectedByMentor(
+  timeline: Timeline,
+  status: "accept" | "reject"
+) {
+  const currentUser = await getCurrUserProfile();
+
+  if (status === "accept") {
+    await ref.doc(timeline.requestId).update({
+      assigneeId: currentUser.uid,
+      requestedTo: [],
+    });
+    //send notification to the author
+    const notificationContent = `${currentUser.displayName} accepted your request to review the art.`;
+    const redirectLink = `/requested/${timeline.requestId}`;
+    await sendNewNotification(
+      timeline.requestAuthor,
+      notificationContent,
+      redirectLink
+    );
+  } else {
+    await ref.doc(timeline.requestId).update({
+      requestedTo: FieldValue.arrayRemove(currentUser.uid),
+    });
+  }
+}
+
+export async function requestMentorForReview(
+  timeline: Timeline,
+  mentorIds: string[]
+) {
+  const currentUser = await getCurrUserProfile();
+  await ref.doc(timeline.requestId).update({
+    requestedTo: mentorIds,
+  });
+  const notificationContent = `${currentUser.displayName} request you to review the art.`;
+  const redirectLink = `/requested/overview/${timeline.requestId}`;
+
+  mentorIds.forEach(async (mentorId) => {
+    await sendNewNotification(mentorId, notificationContent, redirectLink);
+  });
 }

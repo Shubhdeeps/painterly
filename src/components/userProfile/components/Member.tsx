@@ -8,10 +8,25 @@ type Props = {
   date?: string;
   size: "sm" | "md" | "lg";
   uid: string;
+  disableLink?: boolean;
 };
-export default function Member({ src, title, date, size, uid }: Props) {
+export default function Member({
+  src,
+  title,
+  date,
+  size,
+  uid,
+  disableLink,
+}: Props) {
   return (
-    <Link href={`/profile/${uid}`}>
+    <Link
+      onClick={(e) => {
+        if (disableLink) {
+          e.preventDefault();
+        }
+      }}
+      href={`/profile/${uid}`}
+    >
       <div className="d-flex align-items-center gap-2 noselect cursor">
         {src ? (
           <Image src={src} alt="pfp" className={`border-radius-50 ${size}`} />

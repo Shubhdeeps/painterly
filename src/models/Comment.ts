@@ -14,6 +14,7 @@ export type CommentsProps = {
     name: string;
     profileURL: string | null;
     uid: string;
+    isMentor: boolean;
   };
   date: Timestamp;
   commentText: string;

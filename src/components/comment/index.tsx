@@ -9,14 +9,25 @@ export default function Comment({
   comment,
   highlighted,
   currUserId,
+  handleDelete,
 }: {
   comment: CommentsProps;
   highlighted: boolean;
   currUserId?: string;
+  handleDelete?: () => void;
 }) {
   const artAuthorIs = currUserId === comment.author.uid ? "self" : "other";
   const options = {
-    self: [{ value: "Delete", action: () => alert("comment deleted") }],
+    self: [
+      {
+        value: "Delete",
+        action: () => {
+          if (handleDelete) {
+            return handleDelete();
+          }
+        },
+      },
+    ],
     other: [{ value: "Report comment", action: () => alert("Reported!") }],
   };
   return (

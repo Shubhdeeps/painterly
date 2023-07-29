@@ -35,7 +35,8 @@ export default function CreateComment({
   const [commented, setComments] = useState<CommentsProps | null>(null);
   const currUser = auth.currentUser;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     if (callbackForTimeline) {
       callbackForTimeline(commentText);
@@ -113,7 +114,7 @@ export default function CreateComment({
             width: "62px",
             height: "62px",
           }}
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
         >
           {isLoding ? (
             <CircularProgress color="secondary" size="36px" />

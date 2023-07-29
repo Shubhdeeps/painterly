@@ -1,12 +1,10 @@
-import Link from "next/link";
 import React from "react";
-import { Image } from "react-bootstrap";
-import OutlinedButton from "../Sidebar/OutlinedButton";
 import { auth } from "@/services/firebaseConfig";
 import Connection from "./components/Connection";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar, Box } from "@mui/material";
+import MentorHighlighter from "../highlighter/MentorHighlighter";
 
 type Props = {
   name: string;
@@ -14,6 +12,7 @@ type Props = {
   description: string | null;
   currentUserProfile: boolean;
   uid: string;
+  isMentor?: boolean;
 };
 export default function ProfileInfo({
   name,
@@ -21,6 +20,7 @@ export default function ProfileInfo({
   description,
   currentUserProfile,
   uid,
+  isMentor,
 }: Props) {
   const currUserId = auth.currentUser?.uid!;
   const doesProfileBelongsToCurrUser = uid === currUserId;
@@ -45,17 +45,36 @@ export default function ProfileInfo({
         }}
         className="secondary-bg border-radius-14"
       >
-        <Avatar
-          alt={name}
-          src={imageURL ? imageURL : name.charAt(0)}
+        <Box
           sx={{
-            width: 220,
-            height: 220,
-
-            bgcolor: "orange",
-            fontSize: "42px",
+            // border: "1px solid red",
+            position: "relative",
           }}
-        />
+        >
+          <Avatar
+            alt={name}
+            src={imageURL ? imageURL : name.charAt(0)}
+            sx={{
+              width: 220,
+              height: 220,
+
+              bgcolor: "orange",
+              fontSize: "42px",
+            }}
+          />
+          {isMentor && (
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: 2,
+                top: "-10%",
+                right: "-10%",
+              }}
+            >
+              <MentorHighlighter />
+            </Box>
+          )}
+        </Box>
         <Box
           sx={{
             display: "flex",
