@@ -1,6 +1,7 @@
 # Painterly
 
 Painterly is an Art sharing platform. Where user's can share their artistic drawing.
+visit painterly.vercel.app for testing
 
 ## Tech Stack
 
